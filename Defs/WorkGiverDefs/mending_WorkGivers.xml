@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WorkGivers>
+
+	<WorkGiverDef>
+		<defName>Mending</defName>
+		<giverClass>Mending.WorkGiver_Mending</giverClass> 
+		<workType>Mending</workType>
+		<verb>mending</verb>
+		<gerund>mending</gerund>
+		<requiredCapacities>
+			<li>Manipulation</li>
+		</requiredCapacities>
+	</WorkGiverDef>
+
+</WorkGivers>
+
+
+
+
+
+

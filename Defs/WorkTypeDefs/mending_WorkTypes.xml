@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WorkTypeDefs>
+
+	<WorkTypeDef>
+		<defName>Mending</defName>
+		<labelShort>Mend</labelShort>
+		<pawnLabel>Mender</pawnLabel>
+		<gerundLabel>Mending</gerundLabel>
+		<description>Menders repair damaged items.</description>
+		<verb>Mend</verb>
+		<naturalPriority>350</naturalPriority>
+		<relevantSkills>
+			<li>Crafting</li>
+		</relevantSkills>
+		<workTags>
+			<li>Crafting</li>
+			<li>ManualSkilled</li>
+		</workTags>
+	</WorkTypeDef>
+
+
+</WorkTypeDefs>
