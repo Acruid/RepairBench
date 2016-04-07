@@ -9,14 +9,13 @@ namespace Repair
     {
         private StorageSettings _allowedStorage;
         private CompPowerTrader _powerComp;
-        public bool HaulStockpile = true;
-        public bool OutsideItems = true;
-        public float SearchRadius = 999f;
+        public bool HaulStockpile;
+        public bool OutsideItems;
+        public float SearchRadius;
         public bool Suspended;
 
-        public bool CanWorkWithoutPower => _powerComp == null || def.building.unpoweredWorkTableWorkSpeedFactor > 0.0;
+        private bool CanWorkWithoutPower => _powerComp == null || def.building.unpoweredWorkTableWorkSpeedFactor > 0.0;
         public bool UsableNow => CanWorkWithoutPower || _powerComp != null && _powerComp.PowerOn;
-
         public bool StorageTabVisible => true;
 
         public StorageSettings GetStoreSettings()

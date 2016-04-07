@@ -32,7 +32,11 @@ namespace Repair
                 repBench.SearchRadius/2f,
                 item =>
                 {
-                    if (!repBench.GetStoreSettings().filter.Allows(item))
+                    if (!repBench.GetStoreSettings().AllowedToAccept(item))
+                        return false;
+
+                    //TODO: bug workaround, investigate why the parent settings are not being applied to the repbench StoreSettings
+                    if (!repBench.GetParentStoreSettings().AllowedToAccept(item))
                         return false;
 
                     if (item.HitPoints <= 0 || item.HitPoints >= item.MaxHitPoints)
@@ -50,6 +54,7 @@ namespace Repair
                     if (!repBench.OutsideItems && !Find.RoofGrid.Roofed(item.Position))
                         return false;
 
+                    // Log.Warning(String.Format("RepBench: Item={0}, CurAllowed={1}, DefAllowed={2}", item, repBench.GetStoreSettings().filter.Allows(item), repBench.GetParentStoreSettings().filter.Allows(item)));
                     return true;
                 });
 
