@@ -3,10 +3,11 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Mending
+namespace Repair
 {
     // ReSharper disable once InconsistentNaming
-    internal class JobDriver_MendItem : JobDriver
+    // ReSharper disable once UnusedMember.Global
+    internal class JobDriver_RepairItem : JobDriver
     {
         private const float REPAIR_RATE = 12f; // game ticks per reptick
         private const float SKILL_GAIN = 0.55f; // Skill gain per reptick
@@ -18,10 +19,10 @@ namespace Mending
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOnDestroyedOrForbidden(TI_REPBENCH);
+            this.FailOnDestroyedNullOrForbidden(TI_REPBENCH);
             this.FailOnBurningImmobile(TI_REPBENCH);
 
-            this.FailOnDestroyedOrForbidden(TI_ITEM);
+            this.FailOnDestroyedNullOrForbidden(TI_ITEM);
             this.FailOnBurningImmobile(TI_ITEM);
 
             yield return Toils_Reserve.Reserve(TI_REPBENCH);
@@ -62,38 +63,10 @@ namespace Mending
             repairToil.WithEffect(item.def.repairEffect, TI_ITEM);
             yield return repairToil;
 
-            /*
-
-                        var toilColor = new Toil();
-                        TargetInfo target3 = target1;
-                        toilColor.initAction = () =>
-                        {
-                            //Color the Apparel
-                            if (target3.Thing is Apparel)
-                            {
-                                var clothing = target3.Thing as Apparel;
-            //                if(clothing.Stuff.defName == "Cloth")
-                                var comp = clothing.GetComp<CompColorable>();
-
-                                if (comp == null || !comp.Active)
-                                    return;
-
-                                // set it to default color
-                                comp.Color = comp.parent.def.defaultColor;
-
-                                // turn off the color comp
-                                FieldInfo fieldInfo = typeof (CompColorable).GetField("active", BindingFlags.Instance | BindingFlags.NonPublic);
-                                if (fieldInfo != null)
-                                    fieldInfo.SetValue(comp, false);
-                            }
-                        };
-                        toilColor.defaultCompleteMode = (ToilCompleteMode) 1;
-                        yield return toilColor;
-            */
-
             yield return Toils_Haul.StartCarryThing(TI_ITEM);
 
-            if (pawn.CurJob.GetTarget(TI_CELL).Cell.IsValidStorageFor(item))
+            var info = pawn.CurJob.GetTarget(TI_CELL);
+            if (info != null && info.IsValid && info.Cell.IsValidStorageFor(item))
             {
                 yield return Toils_Reserve.Reserve(TI_CELL);
 

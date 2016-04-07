@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<JobDefs>
+
+	<JobDef>
+		<defName>RepairItem</defName>
+		<driverClass>Repair.JobDriver_RepairItem</driverClass>
+		<reportString>Repairing TargetB.</reportString>
+	</JobDef>
+
+
+</JobDefs>

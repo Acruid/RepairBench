@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WorkGivers>
+
+	<WorkGiverDef>
+		<defName>RepairItem</defName>
+		<label>repair items</label>
+		<giverClass>Repair.WorkGiver_Repair</giverClass> 
+		<workType>Crafting</workType>
+		<priorityInType>70</priorityInType>
+		<fixedBillGiverDefs>
+			<li>ElectricTableRepair</li>
+		</fixedBillGiverDefs>
+		<verb>repair</verb>
+		<gerund>repairing</gerund>
+		<requiredCapacities>
+			<li>Manipulation</li>
+		</requiredCapacities>
+	</WorkGiverDef>
+
+</WorkGivers>
+
+
+
+
+
+
