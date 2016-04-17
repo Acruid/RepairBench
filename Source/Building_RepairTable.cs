@@ -9,14 +9,31 @@ namespace Repair
     {
         private StorageSettings _allowedStorage;
         private CompPowerTrader _powerComp;
-        public bool HaulStockpile;
-        public bool OutsideItems;
-        public float SearchRadius;
+        private CompAffectedByFacilities _facilityComp;
+        public bool HaulStockpile = true;
+        public bool OutsideItems = true;
+        public float SearchRadius = 999.0f;
         public bool Suspended;
-
+        
         private bool CanWorkWithoutPower => _powerComp == null || def.building.unpoweredWorkTableWorkSpeedFactor > 0.0;
         public bool UsableNow => CanWorkWithoutPower || _powerComp != null && _powerComp.PowerOn;
         public bool StorageTabVisible => true;
+
+        public float WorkSpeedFactor
+        {
+            get
+            {
+                if (!UsableNow)
+                    return 0;
+
+                var powerFactor = _powerComp.PowerOn ? 1.0f : def.building.unpoweredWorkTableWorkSpeedFactor;
+
+                if (_facilityComp == null)
+                    return powerFactor;
+
+                return _facilityComp.GetStatOffset(StatDefOf.WorkTableWorkSpeedFactor) + powerFactor;
+            }
+        }
 
         public StorageSettings GetStoreSettings()
         {
@@ -55,6 +72,7 @@ namespace Repair
         {
             base.SpawnSetup();
             _powerComp = GetComp<CompPowerTrader>();
+            _facilityComp = GetComp<CompAffectedByFacilities>();
         }
     }
 }

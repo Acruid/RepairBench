@@ -46,6 +46,7 @@
 					<categories>
 						<li>Weapons</li>
 						<li>Apparel</li>
+						<li>Items</li>
 					</categories>
 					<thingDefs>
 						<li>ArtilleryShell</li>

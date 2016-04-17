@@ -9,7 +9,7 @@ namespace Repair
     // ReSharper disable once UnusedMember.Global
     internal class JobDriver_RepairItem : JobDriver
     {
-        private const float REPAIR_RATE = 12f; // game ticks per reptick
+        private const float REPAIR_RATE = 125f; // game ticks per reptick, (5 in-game hours to repair 100hp)
         private const float SKILL_GAIN = 0.55f; // Skill gain per reptick
         private const int HP_GAIN = 1; // durability regen per reptick
 
@@ -38,13 +38,14 @@ namespace Repair
             yield return Toils_Haul.PlaceHauledThingInCell(TI_REPBENCH, null, false);
 
             var item = pawn.CurJob.GetTarget(TI_ITEM).Thing;
+            var table = pawn.CurJob.GetTarget(TI_REPBENCH).Thing as Building_RepairTable;
             var ticksToNextRepair = REPAIR_RATE;
             var repairToil = new Toil
             {
                 tickAction = () =>
                 {
                     pawn.skills.Learn(SkillDefOf.Crafting, SKILL_GAIN);
-                    ticksToNextRepair -= pawn.GetStatValue(StatDefOf.WorkSpeedGlobal);
+                    ticksToNextRepair -= pawn.GetStatValue(StatDefOf.WorkSpeedGlobal) * table.WorkSpeedFactor;
 
                     if (ticksToNextRepair > 0.0)
                         return;
@@ -83,7 +84,7 @@ namespace Repair
                     initAction = () =>
                     {
                         Thing resultingThing;
-                        pawn.carrier.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Direct, out resultingThing);
+                        pawn.carrier.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out resultingThing);
                     },
                     defaultCompleteMode = ToilCompleteMode.Instant
                 };

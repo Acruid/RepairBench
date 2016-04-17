@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Repair
@@ -24,6 +25,8 @@ namespace Repair
                 return;
             }
 
+            // A lot of this comes from Dialog_BillConfig.cs
+
             var position = new Rect(0.0f, 0.0f, size.x, size.y).ContractedBy(10f);
             var listingStandard = new Listing_Standard(position);
 
@@ -32,7 +35,9 @@ namespace Repair
             listingStandard.DoLabelCheckbox("Repair.tabOutside".Translate(), ref repTable.OutsideItems);
 
             listingStandard.DoLabel($"{"Repair.tabSearch".Translate()} {(int) repTable.SearchRadius}");
-            repTable.SearchRadius = listingStandard.DoSlider(repTable.SearchRadius, 3f, 999f);
+            repTable.SearchRadius = listingStandard.DoSlider(repTable.SearchRadius, 3f, 100f);
+            if (repTable.SearchRadius >= 100.0)
+                repTable.SearchRadius = 999f;
 
             listingStandard.End();
 
@@ -40,6 +45,19 @@ namespace Repair
             ThingFilterUI.DoThingFilterConfigWindow(
                 new Rect(0.0f, topOffset, position.width, position.height - topOffset),
                 ref _scrollPosition, repTable.GetStoreSettings().filter, repTable.GetParentStoreSettings().filter, 8);
+        }
+
+        public override void TabUpdate()
+        {
+            var repTable = SelThing as Building_RepairTable;
+            if (repTable == null)
+            {
+                Log.Error("Repair mod: ITab - SelThing is not a RepairTable!");
+                return;
+            }
+
+            if (repTable.SearchRadius <= GenRadial.MaxRadialPatternRadius)
+                GenDraw.DrawRadiusRing(repTable.Position, repTable.SearchRadius);
         }
     }
 }
