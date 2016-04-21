@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -9,6 +10,7 @@ namespace Repair
     internal class WorkGiver_Repair : WorkGiver_Scanner
     {
         private const string JOBDEF_REPAIR = "RepairItem";
+        private const string THINGDEF_REPKIT = "RepairKit";
 
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(def.fixedBillGiverDefs[0]);
 
@@ -25,7 +27,10 @@ namespace Repair
                 repBench.IsBurning() || repBench.IsForbidden(repPawn))
                 return null;
 
-            var thing = GenClosest.ClosestThingReachable(repBench.Position,
+            //TODO: Haul stuff off table
+
+
+            var damagedThing = GenClosest.ClosestThingReachable(repBench.Position,
                 ThingRequest.ForGroup((ThingRequestGroup) 4),
                 PathEndMode.Touch,
                 TraverseParms.For(repPawn, repPawn.NormalMaxDanger()),
@@ -58,23 +63,31 @@ namespace Repair
                     return true;
                 });
 
-            if (thing == null)
+            if (damagedThing == null)
+                return null;
+            
+            var repKit = GenClosest.ClosestThingReachable(repBench.Position,
+                ThingRequest.ForDef(ThingDef.Named(THINGDEF_REPKIT)),
+                PathEndMode.OnCell,
+                TraverseParms.For(repPawn, repPawn.NormalMaxDanger()), 
+                9999f,
+                item => !item.IsForbidden(repPawn) && HaulAIUtility.PawnCanAutomaticallyHaulFast(repPawn, item));
+
+            if (repKit == null)
                 return null;
 
-            var job = new Job(DefDatabase<JobDef>.GetNamed(JOBDEF_REPAIR), repBench, thing)
-            {
-                maxNumToCarry = 1
-            };
+            var job = new Job(DefDatabase<JobDef>.GetNamed(JOBDEF_REPAIR), repBench);
+            job.targetQueueB = new List<TargetInfo>(2);
+            job.numToBringList = new List<int>(2);
 
-            if (repBench.HaulStockpile)
-            {
-                IntVec3 foundCell;
-                if (StoreUtility.TryFindBestBetterStoreCellFor(thing, repPawn, 0, repPawn.Faction, out foundCell))
-                {
-                    repPawn.Reserve(foundCell);
-                    job.targetC = foundCell;
-                }
-            }
+            job.targetQueueB.Add(damagedThing);
+            job.numToBringList.Add(1);
+            job.SetTarget(TargetIndex.B, damagedThing);
+
+            job.targetQueueB.Add(repKit);
+            job.numToBringList.Add(20);
+
+            job.haulMode = HaulMode.ToCellNonStorage;
 
             return job;
         }

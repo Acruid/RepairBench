@@ -1,23 +1,23 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace Repair
 {
     // ReSharper disable once InconsistentNaming
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class Building_RepairTable : Building, IStoreSettingsParent
+    public class Building_RepairTable : Building, IStoreSettingsParent, IBillGiver
     {
         private StorageSettings _allowedStorage;
-        private CompPowerTrader _powerComp;
         private CompAffectedByFacilities _facilityComp;
+        private CompPowerTrader _powerComp;
         public bool HaulStockpile = true;
         public bool OutsideItems = true;
         public float SearchRadius = 999.0f;
         public bool Suspended;
-        
+
         private bool CanWorkWithoutPower => _powerComp == null || def.building.unpoweredWorkTableWorkSpeedFactor > 0.0;
         public bool UsableNow => CanWorkWithoutPower || _powerComp != null && _powerComp.PowerOn;
-        public bool StorageTabVisible => true;
 
         public float WorkSpeedFactor
         {
@@ -34,6 +34,16 @@ namespace Repair
                 return _facilityComp.GetStatOffset(StatDefOf.WorkTableWorkSpeedFactor) + powerFactor;
             }
         }
+
+        public bool CurrentlyUsable()
+        {
+            return UsableNow;
+        }
+
+        public BillStack BillStack { get; }
+        public IEnumerable<IntVec3> IngredientStackCells => GenAdj.CellsOccupiedBy(this);
+
+        public bool StorageTabVisible => true;
 
         public StorageSettings GetStoreSettings()
         {
