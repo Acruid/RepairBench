@@ -1,8 +1,8 @@
 <ModMetaData>
-  <name>Repair Workbench</name>
+  <name>Repair Workbench 1.01</name>
   <author>Acruid</author>
   <url></url>
-  <targetVersion>0.13.1135 rev816</targetVersion>
+  <targetVersion>0.13.1135</targetVersion>
   <description>
 Adds the Repair Workbench to the game so you can repair the durability of items.
   </description>
