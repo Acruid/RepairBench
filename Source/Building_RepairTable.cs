@@ -16,6 +16,11 @@ namespace Repair
         public float SearchRadius = 999.0f;
         public bool Suspended;
 
+        public Building_RepairTable()
+        {
+            BillStack = null; // we don't use bills
+        }
+
         private bool CanWorkWithoutPower => _powerComp == null || def.building.unpoweredWorkTableWorkSpeedFactor > 0.0;
         public bool UsableNow => CanWorkWithoutPower || _powerComp != null && _powerComp.PowerOn;
 

@@ -9,9 +9,6 @@ namespace Repair
     // ReSharper disable once UnusedMember.Global
     internal class WorkGiver_Repair : WorkGiver_Scanner
     {
-        private const string JOBDEF_REPAIR = "RepairItem";
-        private const string THINGDEF_REPKIT = "RepairKit";
-
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(def.fixedBillGiverDefs[0]);
 
         public override Job JobOnThing(Pawn repPawn, Thing thingRepBench)
@@ -65,20 +62,22 @@ namespace Repair
 
             if (damagedThing == null)
                 return null;
-            
+
             var repKit = GenClosest.ClosestThingReachable(repBench.Position,
-                ThingRequest.ForDef(ThingDef.Named(THINGDEF_REPKIT)),
+                ThingRequest.ForDef(ThingDef.Named(Settings.THINGDEF_REPKIT)),
                 PathEndMode.OnCell,
-                TraverseParms.For(repPawn, repPawn.NormalMaxDanger()), 
+                TraverseParms.For(repPawn, repPawn.NormalMaxDanger()),
                 9999f,
                 item => !item.IsForbidden(repPawn) && HaulAIUtility.PawnCanAutomaticallyHaulFast(repPawn, item));
 
             if (repKit == null)
                 return null;
 
-            var job = new Job(DefDatabase<JobDef>.GetNamed(JOBDEF_REPAIR), repBench);
-            job.targetQueueB = new List<TargetInfo>(2);
-            job.numToBringList = new List<int>(2);
+            var job = new Job(DefDatabase<JobDef>.GetNamed(Settings.JOBDEF_REPAIR), repBench)
+            {
+                targetQueueB = new List<TargetInfo>(2),
+                numToBringList = new List<int>(2)
+            };
 
             job.targetQueueB.Add(damagedThing);
             job.numToBringList.Add(1);
