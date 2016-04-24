@@ -97,17 +97,18 @@ namespace Repair
                             if (!spot.IsValid || repkits != null)
                                 break;
 
-                            var list = Find.ThingGrid.ThingsListAt(spot);
-                            foreach (
-                                var thing in list.Where(thing => thing.def == ThingDef.Named(Settings.THINGDEF_REPKIT)))
+                            var list = Find.ThingGrid.ThingsListAt(spot).Where(thing => thing.def == ThingDef.Named(Settings.THINGDEF_REPKIT));
+                            foreach (var thing in list)
                             {
                                 repkits = thing;
                                 break;
                             }
                         }
 
+                        // out of kits
                         if (repkits == null)
                         {
+                            //Technically we did not Succeed, but the job itself did not fail, we just ran out of kits.
                             EndJobWith(JobCondition.Succeeded);
                             return;
                         }
@@ -121,8 +122,6 @@ namespace Repair
                         {
                             repkits.DeSpawn();
                             repkits.Destroy();
-                            EndJobWith(JobCondition.Succeeded);
-                            return;
                         }
                     }
 

@@ -24,14 +24,11 @@ namespace Repair
                 repBench.IsBurning() || repBench.IsForbidden(repPawn))
                 return null;
 
-            //TODO: Haul stuff off table
-
-
             var damagedThing = GenClosest.ClosestThingReachable(repBench.Position,
                 ThingRequest.ForGroup((ThingRequestGroup) 4),
                 PathEndMode.Touch,
                 TraverseParms.For(repPawn, repPawn.NormalMaxDanger()),
-                repBench.SearchRadius/2f,
+                repBench.SearchRadius,
                 item =>
                 {
                     if (!repBench.GetStoreSettings().AllowedToAccept(item))
@@ -56,13 +53,16 @@ namespace Repair
                     if (!repBench.OutsideItems && !Find.RoofGrid.Roofed(item.Position))
                         return false;
 
-                    // Log.Warning(String.Format("RepBench: Item={0}, CurAllowed={1}, DefAllowed={2}", item, repBench.GetStoreSettings().filter.Allows(item), repBench.GetParentStoreSettings().filter.Allows(item)));
                     return true;
                 });
 
             if (damagedThing == null)
                 return null;
-
+            
+            var job1 = WorkGiverUtility.HaulStuffOffBillGiverJob(repPawn, repBench, null);
+            if (job1 != null)
+                return job1;
+            
             var repKit = GenClosest.ClosestThingReachable(repBench.Position,
                 ThingRequest.ForDef(ThingDef.Named(Settings.THINGDEF_REPKIT)),
                 PathEndMode.OnCell,
@@ -83,9 +83,14 @@ namespace Repair
             job.numToBringList.Add(1);
             job.SetTarget(TargetIndex.B, damagedThing);
 
-            job.targetQueueB.Add(repKit);
-            job.numToBringList.Add(20);
+            //TODO: Fetch compoents if needed
 
+            var kitsToFetch = (damagedThing.MaxHitPoints - damagedThing.HitPoints) / Settings.HP_PER_PACK;
+            if (kitsToFetch > 0)
+            {
+                job.targetQueueB.Add(repKit);
+                job.numToBringList.Add(kitsToFetch);
+            }
             job.haulMode = HaulMode.ToCellNonStorage;
 
             return job;
