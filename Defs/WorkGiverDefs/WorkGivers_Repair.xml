@@ -6,7 +6,7 @@
 		<label>repair items</label>
 		<giverClass>Repair.WorkGiver_Repair</giverClass> 
 		<workType>Crafting</workType>
-		<priorityInType>70</priorityInType>
+		<priorityInType>95</priorityInType>
 		<fixedBillGiverDefs>
 			<li>ElectricTableRepair</li>
 		</fixedBillGiverDefs>
