@@ -29,12 +29,12 @@ namespace Repair
             var position = new Rect(0.0f, 0.0f, size.x, size.y).ContractedBy(10f);
             var listingStandard = new Listing_Standard(position);
 
-            listingStandard.DoLabelCheckbox("Repair.tabSuspend".Translate(), ref repTable.Suspended);
-            listingStandard.DoLabelCheckbox("Repair.tabStockpile".Translate(), ref repTable.HaulStockpile);
-            listingStandard.DoLabelCheckbox("Repair.tabOutside".Translate(), ref repTable.OutsideItems);
+            listingStandard.CheckboxLabeled("Repair.tabSuspend".Translate(), ref repTable.Suspended);
+            listingStandard.CheckboxLabeled("Repair.tabStockpile".Translate(), ref repTable.HaulStockpile);
+            listingStandard.CheckboxLabeled("Repair.tabOutside".Translate(), ref repTable.OutsideItems);
 
-            listingStandard.DoLabel($"{"Repair.tabSearch".Translate()} {(int) repTable.SearchRadius}");
-            repTable.SearchRadius = listingStandard.DoSlider(repTable.SearchRadius, 3f, 100f);
+            listingStandard.Label($"{"Repair.tabSearch".Translate()} {(int) repTable.SearchRadius}");
+            repTable.SearchRadius = listingStandard.Slider(repTable.SearchRadius, 3f, 100f);
             if (repTable.SearchRadius >= 100.0)
                 repTable.SearchRadius = 999f;
 

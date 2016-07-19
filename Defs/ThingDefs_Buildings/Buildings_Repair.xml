@@ -21,7 +21,7 @@
 			<WoodLog>60</WoodLog>
 			<Steel>50</Steel>
 		</CostList>
-		<AltitudeLayer>Waist</AltitudeLayer>
+		<AltitudeLayer>Building</AltitudeLayer>
 		<fillPercent>0.5</fillPercent>
 		<useHitPoints>True</useHitPoints>
 		<statBases>
