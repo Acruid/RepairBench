@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ThingDefs>
 
-	<!-- Taken from Buildings_Art.xml -->
+	<!-- Imported from Buildings_Art.xml -->
 	<ThingDef Name="BuildingBase" Abstract="True">
 		<category>Building</category>
 		<thingClass>Building</thingClass>
@@ -14,7 +14,7 @@
 		<filthLeaving>BuildingRubble</filthLeaving>
 	</ThingDef>
 
-	<!-- Taken from Buildings_Production.xml -->
+	<!-- Imported from Buildings_Production.xml -->
 	<ThingDef Name="BenchBase" ParentName="BuildingBase" Abstract="True">
 		<castEdgeShadows>true</castEdgeShadows>
 		<staticSunShadowHeight>0.20</staticSunShadowHeight>
@@ -98,6 +98,9 @@
 		<placeWorkers>
 			<li>PlaceWorker_ShowFacilitiesConnections</li>
 		</placeWorkers>
+		<researchPrerequisites>
+			<li>RepairItems</li>
+		</researchPrerequisites>
 	</ThingDef>
 
 

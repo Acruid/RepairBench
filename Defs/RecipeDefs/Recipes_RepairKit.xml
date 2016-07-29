@@ -4,7 +4,7 @@
 	<RecipeDef>
 		<defName>MakeRepairKit</defName>
 		<label>make repair kits</label>
-		<description>Craft 20 repair kits.</description>
+		<description>Craft 10 repair kits.</description>
 		<jobString>Making repair kits.</jobString>
 		<workSpeedStat>SmithingSpeed</workSpeedStat>
 		<effectWorking>Cook</effectWorking>
@@ -41,8 +41,7 @@
 			<RepairKit>10</RepairKit>
 		</products>
 		<recipeUsers>
-			<li>ElectricSmithy</li>
-			<li>FueledSmithy</li>
+			<li>TableMachining</li>
 		</recipeUsers>
 	</RecipeDef>
 
