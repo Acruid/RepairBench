@@ -1,26 +1,45 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <ThingDef ParentName="ResourceBase">
-    <defName>RepairKit</defName>
-    <label>repair kit</label>
-    <description>A kit of resources to repair an item.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/RepairKit</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <soundInteract>Standard_Drop</soundInteract>
-    <soundDrop>Standard_Drop</soundDrop>
-    <stackLimit>75</stackLimit>
-    <thingCategories>
-      <li>Manufactured</li>
-    </thingCategories>
-    <statBases>
-      <MaxHitPoints>100</MaxHitPoints>
-      <MarketValue>3.50</MarketValue>
-      <Flammability>1.0</Flammability>
-      <DeteriorationRate>2</DeteriorationRate>
-    </statBases>
-  </ThingDef>
+	<!--Taken from Items_Luxury.xml-->
+	<ThingDef Name="ResourceBase" Abstract="True">
+		<thingClass>ThingWithComps</thingClass>
+		<label>unspecified resource</label>
+		<category>Item</category>
+		<resourceReadoutPriority>Middle</resourceReadoutPriority>
+		<useHitPoints>true</useHitPoints>
+		<selectable>true</selectable>
+		<altitudeLayer>Item</altitudeLayer>
+		<stackLimit>75</stackLimit>
+		<comps>
+			<li Class="CompProperties_Forbiddable"/>
+		</comps>
+		<alwaysHaulable>true</alwaysHaulable>
+		<drawGUIOverlay>true</drawGUIOverlay>
+		<rotatable>false</rotatable>
+		<pathCost>15</pathCost>
+	</ThingDef>
+
+	<ThingDef ParentName="ResourceBase">
+		<defName>RepairKit</defName>
+		<label>repair kit</label>
+		<description>A kit of resources to repair an item.</description>
+		<graphicData>
+			<texPath>Things/Item/Resource/RepairKit</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<soundInteract>Standard_Drop</soundInteract>
+		<soundDrop>Standard_Drop</soundDrop>
+		<stackLimit>75</stackLimit>
+		<thingCategories>
+			<li>Manufactured</li>
+		</thingCategories>
+		<statBases>
+			<MaxHitPoints>100</MaxHitPoints>
+			<MarketValue>3.50</MarketValue>
+			<Flammability>1.0</Flammability>
+			<DeteriorationRate>2</DeteriorationRate>
+		</statBases>
+	</ThingDef>
 
 </Defs>

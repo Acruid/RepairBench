@@ -2,7 +2,7 @@
 <ModMetaData>
 	<name>RepairBench 0.14.0</name>
 	<author>Acruid</author>
-	<url/>
-	<targetVersion>0.14.1238</targetVersion>
+	<url />
+	<targetVersion>0.14.1249</targetVersion>
 	<description>Adds the Repair Workbench to the game so you can repair the durability of items.</description>
 </ModMetaData>
