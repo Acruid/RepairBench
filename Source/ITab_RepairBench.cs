@@ -26,8 +26,10 @@ namespace Repair
 
             // A lot of this comes from Dialog_BillConfig.cs
 
-            var position = new Rect(0.0f, 0.0f, size.x, size.y).ContractedBy(10f);
+            var position = new Rect(0f, 0f, size.x, size.y).ContractedBy(10f);
             var listingStandard = new Listing_Standard(position);
+
+            listingStandard.Gap(); // move the checkbox under the IFrame close "X"
 
             listingStandard.CheckboxLabeled("Repair.tabSuspend".Translate(), ref repTable.Suspended);
             listingStandard.CheckboxLabeled("Repair.tabStockpile".Translate(), ref repTable.HaulStockpile);
@@ -37,12 +39,14 @@ namespace Repair
             repTable.SearchRadius = listingStandard.Slider(repTable.SearchRadius, 3f, 100f);
             if (repTable.SearchRadius >= 100.0)
                 repTable.SearchRadius = 999f;
+            
+            listingStandard.Gap(4f);// some spacing between slider and ThingFilterUI
 
             listingStandard.End();
-
+            
             var topOffset = listingStandard.CurHeight;
-            ThingFilterUI.DoThingFilterConfigWindow(
-                new Rect(0.0f, topOffset, position.width, position.height - topOffset),
+            var thingPosition = new Rect(position.x, topOffset, position.width, position.height - topOffset);
+            ThingFilterUI.DoThingFilterConfigWindow(thingPosition,
                 ref _scrollPosition, repTable.GetStoreSettings().filter, repTable.GetParentStoreSettings().filter, 8);
         }
 

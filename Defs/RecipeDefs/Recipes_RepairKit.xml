@@ -20,7 +20,7 @@
 						<li>Steel</li>
 					</thingDefs>
 				</filter>
-				<count>10</count>
+				<count>50</count>
 			</li>
 			<li>
 				<filter>
@@ -28,7 +28,7 @@
 						<li>Cloth</li>
 					</thingDefs>
 				</filter>
-				<count>10</count>
+				<count>50</count>
 			</li>
 		</ingredients>
 		<fixedIngredientFilter>
