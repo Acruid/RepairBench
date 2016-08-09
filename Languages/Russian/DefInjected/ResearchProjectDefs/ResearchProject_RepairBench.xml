@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResearchProjectDefs>
+
+	<RepairItems.label>Ремонт вещей</RepairItems.label>
+	<RepairItems.description>Позволяет строить ремонтные верстаки для восстановления прочности вещей.</RepairItems.description>
+
+</ResearchProjectDefs>
+

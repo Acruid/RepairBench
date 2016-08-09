@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ThingDefs>
+
+	<ElectricTableRepair.label>Электрический ремонтый верстак</ElectricTableRepair.label>
+	<ElectricTableRepair.Description>Верстак оснащен всеми инструментами, необходимыми для восстановления поврежденных вещей.</ElectricTableRepair.Description>
+
+</ThingDefs>

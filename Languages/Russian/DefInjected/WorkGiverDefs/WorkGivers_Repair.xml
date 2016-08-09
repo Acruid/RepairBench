@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WorkGivers>
+
+	<RepairItem.label>Ремонтировать вещи</RepairItem.label>
+	<RepairItem.verb>ремонтирует</RepairItem.verb>
+	<RepairItem.gerund>ремонтировать</RepairItem.gerund>
+
+</WorkGivers>

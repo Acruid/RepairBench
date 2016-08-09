@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RecipeDefs>
+
+	<MakeRepairKit.label>сделать ремкомплекты</MakeRepairKit.label>
+	<MakeRepairKit.description>Сделать 10 ремкомплектов.</MakeRepairKit.description>
+	<MakeRepairKit.jobString>Делает ремкомплекты.</MakeRepairKit.jobString>
+
+</RecipeDefs>
