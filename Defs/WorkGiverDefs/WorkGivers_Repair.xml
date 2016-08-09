@@ -10,8 +10,8 @@
 		<fixedBillGiverDefs>
 			<li>ElectricTableRepair</li>
 		</fixedBillGiverDefs>
-		<verb>repair</verb>
-		<gerund>repairing</gerund>
+		<verb>repair item</verb>
+		<gerund>repairing item</gerund>
 		<requiredCapacities>
 			<li>Manipulation</li>
 		</requiredCapacities>
