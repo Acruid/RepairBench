@@ -35,6 +35,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Community Core Library">
+      <HintPath>..\..\Community Core Library\Assemblies\Community Core Library.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,6 +53,7 @@
     <Compile Include="Building_RepairTable.cs" />
     <Compile Include="ITab_RepairBench.cs" />
     <Compile Include="JobDriver_RepairItem.cs" />
+    <Compile Include="ModConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="WorkGiver_Repair.cs" />

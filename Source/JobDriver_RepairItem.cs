@@ -69,7 +69,7 @@ namespace Repair
             //This will do nothing if we took ingredients and are thus already at the bill giver
             yield return gotoBillGiver;
 
-            var ticksToNextRepair = Settings.REPAIR_RATE;
+            var ticksToNextRepair = Settings.RepairRate;
             var repairedAmount = 0;
             var repairToil = new Toil
             {
@@ -79,16 +79,16 @@ namespace Repair
 
                     pawn.skills.Learn(SkillDefOf.Crafting, Settings.SKILL_GAIN);
                     pawn.GainComfortFromCellIfPossible();
-                    ticksToNextRepair -= pawn.GetStatValue(StatDefOf.WorkSpeedGlobal)*table.WorkSpeedFactor;
+                    ticksToNextRepair -= (int)Math.Round(pawn.GetStatValue(StatDefOf.WorkSpeedGlobal)*table.WorkSpeedFactor);
 
                     if (ticksToNextRepair > 0.0)
                         return;
 
-                    ticksToNextRepair = Settings.REPAIR_RATE;
+                    ticksToNextRepair = Settings.RepairRate;
                     item.HitPoints += Settings.HP_GAIN;
                     repairedAmount += Settings.HP_GAIN;
 
-                    if (repairedAmount%Settings.HP_PER_PACK == 0)
+                    if (Settings.ResourceMode == ResourceModes.REPAIR_KIT && repairedAmount%Settings.HpPerPack == 0)
                     {
                         //TODO: investigate job.placedTargets instead of searching every time
                         Thing repkits = null;

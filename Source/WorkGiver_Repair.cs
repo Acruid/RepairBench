@@ -62,16 +62,20 @@ namespace Repair
             var job1 = WorkGiverUtility.HaulStuffOffBillGiverJob(repPawn, repBench, null);
             if (job1 != null)
                 return job1;
-            
-            var repKit = GenClosest.ClosestThingReachable(repBench.Position,
-                ThingRequest.ForDef(ThingDef.Named(Settings.THINGDEF_REPKIT)),
-                PathEndMode.OnCell,
-                TraverseParms.For(repPawn, repPawn.NormalMaxDanger()),
-                9999f,
-                item => !item.IsForbidden(repPawn) && HaulAIUtility.PawnCanAutomaticallyHaulFast(repPawn, item));
 
-            if (repKit == null)
-                return null;
+            Thing repKit = null;
+            if (Settings.ResourceMode == ResourceModes.REPAIR_KIT)
+            {
+                repKit = GenClosest.ClosestThingReachable(repBench.Position,
+                    ThingRequest.ForDef(ThingDef.Named(Settings.THINGDEF_REPKIT)),
+                    PathEndMode.OnCell,
+                    TraverseParms.For(repPawn, repPawn.NormalMaxDanger()),
+                    9999f,
+                    item => !item.IsForbidden(repPawn) && HaulAIUtility.PawnCanAutomaticallyHaulFast(repPawn, item));
+
+                if (repKit == null)
+                    return null;
+            }
 
             var job = new Job(DefDatabase<JobDef>.GetNamed(Settings.JOBDEF_REPAIR), repBench)
             {
@@ -85,12 +89,16 @@ namespace Repair
 
             //TODO: Fetch compoents if needed
 
-            var kitsToFetch = (damagedThing.MaxHitPoints - damagedThing.HitPoints) / Settings.HP_PER_PACK;
-            if (kitsToFetch > 0)
+            if (Settings.ResourceMode == ResourceModes.REPAIR_KIT && repKit != null)
             {
-                job.targetQueueB.Add(repKit);
-                job.numToBringList.Add(kitsToFetch);
+                var kitsToFetch = (damagedThing.MaxHitPoints - damagedThing.HitPoints)/Settings.HpPerPack;
+                if (kitsToFetch > 0)
+                {
+                    job.targetQueueB.Add(repKit);
+                    job.numToBringList.Add(kitsToFetch);
+                }
             }
+
             job.haulMode = HaulMode.ToCellNonStorage;
 
             return job;

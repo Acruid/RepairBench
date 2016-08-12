@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  <Repair.tableTab>Items</Repair.tableTab>
-  <Repair.tabSuspend>Suspend</Repair.tabSuspend>
-  <Repair.tabStockpile>Haul to Stockpile</Repair.tabStockpile>
-  <Repair.tabOutside>Outside Items</Repair.tabOutside>
-  <Repair.tabSearch>Search Radius:</Repair.tabSearch>
+	<Repair.tableTab>Items</Repair.tableTab>
+	<Repair.tabSuspend>Suspend</Repair.tabSuspend>
+	<Repair.tabStockpile>Haul to Stockpile</Repair.tabStockpile>
+	<Repair.tabOutside>Outside Items</Repair.tabOutside>
+	<Repair.tabSearch>Search Radius:</Repair.tabSearch>
+
+	<Repair.Mcm.ResourceModePrefix>Resource</Repair.Mcm.ResourceModePrefix>
+	<Repair.Mcm.ResourceModeTip>Resources used to repair an item.</Repair.Mcm.ResourceModeTip>
+	<Repair.Mcm.RepairRateText>Ticks / HP</Repair.Mcm.RepairRateText>
+	<Repair.Mcm.RepairRateTip>How long it takes in ticks to repair 1 HP (60 ticks = 1 second).</Repair.Mcm.RepairRateTip>
+	<Repair.Mcm.HpPerPackText>HP / Repair kit</Repair.Mcm.HpPerPackText>
+	<Repair.Mcm.HpPerPackTip>How much HP a repair kit heals.</Repair.Mcm.HpPerPackTip>
 </LanguageData>

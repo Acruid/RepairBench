@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<CommunityCoreLibrary.ModHelperDef>
+		<defName>RepairBench</defName>
+		<ModName>Repair Workbench</ModName>
+		<minCCLVersion>0.14.0</minCCLVersion>
+		<ModConfigurationMenus>
+			<li>
+				<label>Repair Workbench</label>
+				<mcmClass>Repair.ModConfiguration</mcmClass>
+			</li>
+		</ModConfigurationMenus>
+		<TraderKinds>
+			<li>
+				<targetDef>Caravan_Outlander_BulkGoods</targetDef>
+				<stockGenerators>
+					<li Class="StockGenerator_SingleDef">
+						<thingDef>RepairKit</thingDef>
+						<countRange>
+							<min>5</min>
+							<max>25</max>
+						</countRange>
+					</li>
+				</stockGenerators>
+			</li>
+			<li>
+				<targetDef>Caravan_Outlander_CombatSupplier</targetDef>
+				<stockGenerators>
+					<li Class="StockGenerator_SingleDef">
+						<thingDef>RepairKit</thingDef>
+						<countRange>
+							<min>-5</min>
+							<max>10</max>
+						</countRange>
+					</li>
+				</stockGenerators>
+			</li>
+			<li>
+				<targetDef>Orbital_Misc_BulkGoods</targetDef>
+				<stockGenerators>
+					<li Class="StockGenerator_SingleDef">
+						<thingDef>RepairKit</thingDef>
+						<countRange>
+							<min>5</min>
+							<max>25</max>
+						</countRange>
+					</li>
+				</stockGenerators>
+			</li>
+			<li>
+				<targetDef>Orbital_Misc_CombatSupplier</targetDef>
+				<stockGenerators>
+					<li Class="StockGenerator_SingleDef">
+						<thingDef>RepairKit</thingDef>
+						<countRange>
+							<min>-5</min>
+							<max>15</max>
+						</countRange>
+					</li>
+				</stockGenerators>
+			</li>
+		</TraderKinds>
+	</CommunityCoreLibrary.ModHelperDef>
+
+</Defs>
