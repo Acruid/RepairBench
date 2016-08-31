@@ -29,7 +29,7 @@ namespace Repair
 
             //these are initially set up by workgiver
             var item = CurJob.GetTargetQueue(TI_ITEM)[0].Thing;
-            var table = CurJob.GetTarget(TI_REPBENCH).Thing as Building_RepairTable;
+            var table = CurJob.GetTarget(TI_REPBENCH).Thing as Building_WorkTable;
 
             if (table == null)
                 throw new Exception("RepBench: JobDriver - RepairTable was null.");
@@ -69,7 +69,7 @@ namespace Repair
             //This will do nothing if we took ingredients and are thus already at the bill giver
             yield return gotoBillGiver;
 
-            var ticksToNextRepair = Settings.RepairRate;
+            float ticksToNextRepair = Settings.RepairRate;
             var repairedAmount = 0;
             var repairToil = new Toil
             {
@@ -79,8 +79,8 @@ namespace Repair
 
                     pawn.skills.Learn(SkillDefOf.Crafting, Settings.SKILL_GAIN);
                     pawn.GainComfortFromCellIfPossible();
-                    ticksToNextRepair -= (int)Math.Round(pawn.GetStatValue(StatDefOf.WorkSpeedGlobal)*table.WorkSpeedFactor);
 
+                    ticksToNextRepair -= pawn.GetStatValue(StatDefOf.WorkSpeedGlobal) * table.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor);
                     if (ticksToNextRepair > 0.0)
                         return;
 
@@ -138,7 +138,7 @@ namespace Repair
 
             yield return Toils_Haul.StartCarryThing(TI_ITEM);
 
-            if (table.HaulStockpile)
+            if (CurJob.bill.GetStoreMode() == BillStoreMode.BestStockpile)
             {
                 yield return new Toil
                 {

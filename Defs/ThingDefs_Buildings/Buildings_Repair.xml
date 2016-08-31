@@ -23,7 +23,7 @@
 	<ThingDef ParentName="BenchBase">
 		<DefName>ElectricTableRepair</DefName>
 		<label>electric repair bench</label>
-		<ThingClass>Repair.Building_RepairTable</ThingClass>
+		<ThingClass>Building_WorkTable</ThingClass>
 		<Description>A workbench equipped with all the tools required to repair damaged items.</Description>
 		<graphicData>
 			<texPath>Things/Building/Production/TableMending</texPath>
@@ -56,9 +56,10 @@
 		<interactionCellOffset>(0,0,-1)</interactionCellOffset>
 		<surfaceType>Item</surfaceType>
 		<inspectorTabs>
-			<li>Repair.ITab_RepairBench</li>
+			<li>ITab_Bills</li>
 		</inspectorTabs>
 		<building>
+			<spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
 			<unpoweredWorkTableWorkSpeedFactor>0.4</unpoweredWorkTableWorkSpeedFactor>
 			<fixedStorageSettings>
 				<filter>

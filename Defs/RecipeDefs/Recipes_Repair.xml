@@ -45,4 +45,47 @@
 		</recipeUsers>
 	</RecipeDef>
 
+	<RecipeDef>
+		<defName>RepairItem</defName>
+		<label>repair item</label>
+		<description>Repair item at a repairing bench.</description>
+		<jobString>repairing item</jobString>
+		<workSpeedStat>SmithingSpeed</workSpeedStat>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_Machining</soundWorking>
+		<allowMixingIngredients>false</allowMixingIngredients>
+		<workAmount>1200</workAmount>
+		<targetCountAdjustment>5</targetCountAdjustment>
+		<workSkill>Crafting</workSkill>
+		<ingredients>
+			<li>
+				<filter>
+					<categories>
+						<li>Weapons</li>
+						<li>Apparel</li>
+						<li>Items</li>
+					</categories>
+					<thingDefs>
+						<li>ArtilleryShell</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<categories>
+				<li>Weapons</li>
+				<li>Apparel</li>
+				<li>Items</li>
+			</categories>
+			<thingDefs>
+				<li>ArtilleryShell</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products />
+		<recipeUsers>
+			<li>ElectricTableRepair</li>
+		</recipeUsers>
+	</RecipeDef>
+
 </RecipeDefs>

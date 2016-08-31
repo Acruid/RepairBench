@@ -50,8 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Building_RepairTable.cs" />
-    <Compile Include="ITab_RepairBench.cs" />
+    <Compile Include="Debug.cs" />
     <Compile Include="JobDriver_RepairItem.cs" />
     <Compile Include="ModConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

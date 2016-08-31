@@ -7,6 +7,7 @@ using Verse;
 
 namespace Repair
 {
+#if USE_CCL
     /// <summary>
     /// Adds mod configuration settings to MCM using CCL.
     /// Credit: Based off of the Fluffy Tabs Work UI mod.
@@ -86,4 +87,5 @@ namespace Repair
             }
         }
     }
+#endif
 }
