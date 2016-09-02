@@ -44,12 +44,88 @@
 			<li>TableMachining</li>
 		</recipeUsers>
 	</RecipeDef>
-
+	
 	<RecipeDef>
 		<defName>RepairItem</defName>
-		<label>repair item</label>
-		<description>Repair item at a repairing bench.</description>
-		<jobString>repairing item</jobString>
+	</RecipeDef>
+
+	<RecipeDef>
+		<defName>RepairItemApparel</defName>
+		<label>repair apparel</label>
+		<description>Repair apparel item at a repairing bench.</description>
+		<jobString>repairing apparel item</jobString>
+		<workSpeedStat>SmithingSpeed</workSpeedStat>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_Machining</soundWorking>
+		<allowMixingIngredients>false</allowMixingIngredients>
+		<workAmount>1200</workAmount>
+		<targetCountAdjustment>5</targetCountAdjustment>
+		<workSkill>Crafting</workSkill>
+		<ingredients>
+			<li>
+				<filter>
+					<categories>
+						<li>Apparel</li>
+					</categories>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<categories>
+				<li>Apparel</li>
+			</categories>
+		</fixedIngredientFilter>
+		<products />
+		<recipeUsers>
+			<li>ElectricTableRepair</li>
+		</recipeUsers>
+	</RecipeDef>
+	
+	<RecipeDef>
+		<defName>RepairItemMisc</defName>
+		<label>repair misc</label>
+		<description>Repair misc item at a repairing bench.</description>
+		<jobString>repairing misc item</jobString>
+		<workSpeedStat>SmithingSpeed</workSpeedStat>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_Machining</soundWorking>
+		<allowMixingIngredients>false</allowMixingIngredients>
+		<workAmount>1200</workAmount>
+		<targetCountAdjustment>5</targetCountAdjustment>
+		<workSkill>Crafting</workSkill>
+		<ingredients>
+			<li>
+				<filter>
+					<categories>
+						<li>Items</li>
+					</categories>
+					<thingDefs>
+						<li>ArtilleryShell</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<categories>
+				<li>Items</li>
+			</categories>
+			<thingDefs>
+				<li>ArtilleryShell</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products />
+		<recipeUsers>
+			<li>ElectricTableRepair</li>
+		</recipeUsers>
+	</RecipeDef>
+	
+	<RecipeDef>
+		<defName>RepairItemWeapon</defName>
+		<label>repair weapon</label>
+		<description>Repair weapon item at a repairing bench.</description>
+		<jobString>repairing weapon item</jobString>
 		<workSpeedStat>SmithingSpeed</workSpeedStat>
 		<effectWorking>Cook</effectWorking>
 		<soundWorking>Recipe_Machining</soundWorking>
@@ -62,12 +138,7 @@
 				<filter>
 					<categories>
 						<li>Weapons</li>
-						<li>Apparel</li>
-						<li>Items</li>
 					</categories>
-					<thingDefs>
-						<li>ArtilleryShell</li>
-					</thingDefs>
 				</filter>
 				<count>1</count>
 			</li>
@@ -75,12 +146,7 @@
 		<fixedIngredientFilter>
 			<categories>
 				<li>Weapons</li>
-				<li>Apparel</li>
-				<li>Items</li>
 			</categories>
-			<thingDefs>
-				<li>ArtilleryShell</li>
-			</thingDefs>
 		</fixedIngredientFilter>
 		<products />
 		<recipeUsers>

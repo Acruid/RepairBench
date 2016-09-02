@@ -88,7 +88,7 @@ namespace Repair
                     return null;
                 }
                 
-                Debug<Thing>.PrintList("JobOnThing.damagedItems", damagedItems);
+                Debug.PrintList("JobOnThing.damagedItems", damagedItems);
 
                 foreach (var item in damagedItems)
                 {
@@ -251,7 +251,7 @@ namespace Repair
             if (neededIngreds == null)
                 return true;
             
-            Debug<ThingCount>.PrintList("FindBest.neededIngreds", neededIngreds);
+            Debug.PrintList("FindBest.neededIngreds", neededIngreds);
 
             // free repair!
             if (neededIngreds.Count == 0)
@@ -309,8 +309,8 @@ namespace Repair
             
             RegionTraverser.BreadthFirstTraverse(rootRegion, entryCondition, regionProcessor, 99999);
             
-            Log.Message("foundall " + foundAll);
-            Debug<ThingAmount>.PrintList("FindBest.chosen", chosen);
+            Debug.PrintLine("foundall " + foundAll);
+            Debug.PrintList("FindBest.chosen", chosen);
 
             return foundAll;
         }

@@ -1,15 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Verse;
 
 namespace Repair
 {
-    internal static class Debug<T>
+    internal static class Debug
     {
-        internal static void PrintList(string title, IEnumerable<T> list)
+        private static readonly bool Enabled = false;
+
+        internal static void PrintLine(string line)
         {
+            if (!Enabled)
+                return;
+
+            Log.Message(line);
+        }
+
+        internal static void PrintList<T>(string title, IEnumerable<T> list)
+        {
+            if (!Enabled)
+                return;
+
             Log.Message("-- DebugList - "+ title + " --");
             try
             {
