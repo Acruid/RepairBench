@@ -26,9 +26,9 @@
 		<ThingClass>Building_WorkTable</ThingClass>
 		<Description>A workbench equipped with all the tools required to repair damaged items.</Description>
 		<graphicData>
-			<texPath>Things/Building/Production/TableMending</texPath>
-			<graphicClass>Graphic_Single</graphicClass>
-			<drawSize>(3,1)</drawSize>
+			<texPath>Things/Building/Production/TableRepair</texPath>
+			<graphicClass>Graphic_Multi</graphicClass>
+			<drawSize>(3.5,1.5)</drawSize>
 			<damageData>
 				<cornerTL>Damage/Corner</cornerTL>
 				<cornerTR>Damage/Corner</cornerTR>
@@ -36,10 +36,15 @@
 				<cornerBR>Damage/Corner</cornerBR>
 			</damageData>
 		</graphicData>
+		<costStuffCount>75</costStuffCount>
 		<CostList>
-			<WoodLog>60</WoodLog>
 			<Steel>50</Steel>
+			<Component>3</Component>
 		</CostList>
+		<stuffCategories>
+			<li>Metallic</li>
+			<li>Woody</li>
+		</stuffCategories>
 		<AltitudeLayer>Building</AltitudeLayer>
 		<fillPercent>0.5</fillPercent>
 		<useHitPoints>True</useHitPoints>
@@ -61,26 +66,6 @@
 		<building>
 			<spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
 			<unpoweredWorkTableWorkSpeedFactor>0.4</unpoweredWorkTableWorkSpeedFactor>
-			<fixedStorageSettings>
-				<filter>
-					<categories>
-						<li>Weapons</li>
-						<li>Apparel</li>
-						<li>Items</li>
-					</categories>
-					<thingDefs>
-						<li>ArtilleryShell</li>
-					</thingDefs>
-				</filter>
-			</fixedStorageSettings>
-			<defaultStorageSettings>
-				<priority>Important</priority>
-				<filter>
-					<categories>
-						<li>Weapons</li>
-					</categories>
-				</filter>
-			</defaultStorageSettings>
 		</building>
 		<comps>
 			<li Class="CompProperties_Power">
@@ -103,6 +88,5 @@
 			<li>RepairItems</li>
 		</researchPrerequisites>
 	</ThingDef>
-
-
+	
 </ThingDefs>
