@@ -73,14 +73,25 @@ namespace Repair
             var repairedAmount = 0;
             var repairToil = new Toil
             {
+                initAction = () =>
+                {
+                    Debug.PrintLine("repairToil.PreInit");
+                    CurJob.bill.Notify_DoBillStarted();
+                    Debug.PrintLine("repairToil.PostInit");
+                },
+
                 tickAction = () =>
                 {
+//                    Debug.PrintLine("repairToil.tick.Check");
+//                    pawn.jobs.CheckForJobOverride();
+
+                    CurJob.bill.Notify_PawnDidWork(pawn);
                     CurJob.SetTarget(TargetIndex.B, item);
 
                     pawn.skills.Learn(SkillDefOf.Crafting, Settings.SKILL_GAIN);
                     pawn.GainComfortFromCellIfPossible();
 
-                    ticksToNextRepair -= pawn.GetStatValue(StatDefOf.WorkSpeedGlobal) * table.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor);
+                    ticksToNextRepair -= pawn.GetStatValue(StatDefOf.WorkSpeedGlobal)*table.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor);
                     if (ticksToNextRepair > 0.0)
                         return;
 
@@ -135,6 +146,18 @@ namespace Repair
             };
             repairToil.WithEffect(item.def.repairEffect, TI_ITEM);
             yield return repairToil;
+
+            var itemRepairedToil = new Toil
+            {
+                initAction = () =>
+                {
+                    var list = new List<Thing> { item };
+                    CurJob.bill.Notify_IterationCompleted(pawn, list);
+                    RecordsUtility.Notify_BillDone(pawn, list);
+                }
+            };
+
+            yield return itemRepairedToil;
 
             yield return Toils_Haul.StartCarryThing(TI_ITEM);
 
