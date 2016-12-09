@@ -88,7 +88,7 @@ namespace Repair
                     CurJob.bill.Notify_PawnDidWork(pawn);
                     CurJob.SetTarget(TargetIndex.B, item);
 
-                    pawn.skills.Learn(SkillDefOf.Crafting, Settings.SKILL_GAIN);
+                    pawn.skills.Learn(SkillDefOf.Crafting, Settings.SkillGain);
                     pawn.GainComfortFromCellIfPossible();
 
                     ticksToNextRepair -= pawn.GetStatValue(StatDefOf.WorkSpeedGlobal)*table.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor);

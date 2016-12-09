@@ -93,7 +93,7 @@ namespace Repair
         internal static ResourceModes ResourceMode = ResourceModes.REPAIR_KIT;
 
         internal static int RepairRate = 60; // game ticks per reptick
-        internal const float SKILL_GAIN = 0.55f; // Skill gain per reptick
+        internal static float SkillGain = 0.55f; // Skill gain per reptick
         internal const int HP_GAIN = 1; // durability regen per reptick
 
         internal static int HpPerPack = 5; // durability per kit
