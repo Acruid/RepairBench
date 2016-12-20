@@ -64,7 +64,7 @@ namespace Repair
             if (!pawn.CanReserveAndReach(bench.InteractionCell, PathEndMode.OnCell, Danger.Some))
                 return null;
             
-            giver.BillStack.RemoveInvalidBills();
+            giver.BillStack.RemoveIncompletableBills();
 
             // clears off workbench
             var jobHaul = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, giver, null);
@@ -120,7 +120,7 @@ namespace Repair
             List<Thing> relevantItems = new List<Thing>();
 
             //get the root region that the bench is in.
-            Region rootRegion = Find.RegionGrid.GetValidRegionAt(GetBillGiverRootCell(bench, pawn));
+            Region rootRegion = pawn.Map.regionGrid.GetValidRegionAt(GetBillGiverRootCell(bench, pawn));
             if (rootRegion == null)
                 return validItems;
             
@@ -198,6 +198,7 @@ namespace Repair
         private static List<Thing> FindFirstDamagedItem(Pawn pawn, Thing bench, Bill bill)
         {
             var damagedThing = GenClosest.ClosestThingReachable(bench.Position,
+                pawn.Map,
                 ThingRequest.ForGroup(ThingRequestGroup.HaulableAlways),
                 PathEndMode.Touch,
                 TraverseParms.For(pawn, pawn.NormalMaxDanger()),
@@ -236,7 +237,7 @@ namespace Repair
             var corpse = thing as Corpse;
             Pawn pawn2 = null;
             if (corpse != null)
-                pawn2 = corpse.innerPawn;
+                pawn2 = corpse.InnerPawn;
             return def.fixedBillGiverDefs != null && def.fixedBillGiverDefs.Contains(thing.def) ||
                    pawn1 != null &&
                    (def.billGiversAllHumanlikes && pawn1.RaceProps.Humanlike || def.billGiversAllMechanoids && pawn1.RaceProps.IsMechanoid ||
@@ -260,7 +261,7 @@ namespace Repair
             if (neededIngreds.Count == 0)
                 return true;
 
-            var rootRegion = Find.RegionGrid.GetValidRegionAt(GetBillGiverRootCell(billGiver, pawn));
+            var rootRegion = pawn.Map.regionGrid.GetValidRegionAt(GetBillGiverRootCell(billGiver, pawn));
             if (rootRegion == null)
                 return false;
             //MakeIngredientsListInProcessingOrder(ingredientsOrdered, bill)
@@ -272,7 +273,7 @@ namespace Repair
             {
                 if (!t.Spawned || t.IsForbidden(pawn) || 
                 (t.Position - billGiver.Position).LengthHorizontalSquared >= bill.ingredientSearchRadius*(double) bill.ingredientSearchRadius || 
-                !neededIngreds.Any( ingred => ingred.thingDef == t.def) ||
+                !neededIngreds.Any( ingred => ingred.ThingDef == t.def) ||
                 !pawn.CanReserve(t))
                     return false;
 
@@ -336,17 +337,17 @@ namespace Repair
 
                 case ResourceModes.INGREDIENTS:
 
-                    //totalCost is cached, DO NOT MODIFY IT
+                    //tmpTotalCost is cached, DO NOT MODIFY IT
                     var tmpTotalCost = itemDamaged.CostListAdjusted();
                     totalCost = new List<ThingCount>(tmpTotalCost.Count);
                     totalCost.AddRange(tmpTotalCost.Select(thingCount => new ThingCount(thingCount.thingDef, thingCount.count)));
 
                     foreach (var thingCount in totalCost)
                     {
-                        var origCount = thingCount.count;
+                        var origCount = thingCount.Count;
                         var damPercent = (itemDamaged.MaxHitPoints - itemDamaged.HitPoints)/(float) itemDamaged.MaxHitPoints;
                         var newCount = (int)Math.Floor(origCount * damPercent * Settings.INGRED_REPAIR_PERCENT);
-                        thingCount.count = newCount;
+                        thingCount.WithCount(newCount);
                         Log.Message($"origCount: {origCount} | damPer:{damPercent} | newCount:{newCount}");
                     }
                     break;
@@ -355,7 +356,7 @@ namespace Repair
                     return new List<ThingCount>(0);
             }
             
-            return totalCost.Where((tc) => tc.count != 0).ToList();
+            return totalCost.Where((tc) => tc.Count != 0).ToList();
         }
 
 
@@ -370,9 +371,9 @@ namespace Repair
                 var flag = false;
                 for (var index2 = 0; index2 < AvailableCounts.Count; ++index2)
                 {
-                    float f = ingredientCount.count;
+                    float f = ingredientCount.Count;
 
-                    if (!(f <= (double) AvailableCounts.GetCount(index2)) || ingredientCount.thingDef != AvailableCounts.GetDef(index2))
+                    if (!(f <= (double) AvailableCounts.GetCount(index2)) || ingredientCount.ThingDef != AvailableCounts.GetDef(index2))
                         continue;
 
                     foreach (var item in availableThings)
@@ -387,7 +388,7 @@ namespace Repair
                         if (f < 1.0/1000.0)
                         {
                             flag = true;
-                            var val = AvailableCounts.GetCount(index2) - ingredientCount.count;
+                            var val = AvailableCounts.GetCount(index2) - ingredientCount.Count;
                             AvailableCounts.SetCount(index2, val);
                             break;
                         }
@@ -416,19 +417,19 @@ namespace Repair
             {
                 haulMode = HaulMode.ToCellNonStorage,
                 bill = bill,
-                targetQueueB = new List<TargetInfo>(ingredients.Count),
-                numToBringList = new List<int>(ingredients.Count)
+                targetQueueB = new List<LocalTargetInfo>(ingredients.Count),
+                countQueue = new List<int>(ingredients.Count)
             };
 
             // add item to be repaired
             job.targetQueueB.Add(itemDamaged);
-            job.numToBringList.Add(1);
+            job.countQueue.Add(1);
 
             // add ingredients
             for (var index = 0; index < ingredients.Count; ++index)
             {
                 job.targetQueueB.Add(ingredients[index].thing);
-                job.numToBringList.Add(ingredients[index].count);
+                job.countQueue.Add(ingredients[index].count);
             }
 
             return job;

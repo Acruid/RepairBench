@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -108,7 +109,7 @@ namespace Repair
                             if (!spot.IsValid || repkits != null)
                                 break;
 
-                            var list = Find.ThingGrid.ThingsListAt(spot).Where(thing => thing.def == ThingDef.Named(Settings.THINGDEF_REPKIT));
+                            var list = pawn.Map.thingGrid.ThingsListAt(spot).Where(thing => thing.def == ThingDef.Named(Settings.THINGDEF_REPKIT));
                             foreach (var thing in list)
                             {
                                 repkits = thing;
@@ -168,7 +169,7 @@ namespace Repair
                     initAction = () =>
                     {
                         IntVec3 foundCell;
-                        if (!StoreUtility.TryFindBestBetterStoreCellFor(item, pawn, StoragePriority.Unstored,
+                        if (!StoreUtility.TryFindBestBetterStoreCellFor(item, pawn, pawn.Map, StoragePriority.Unstored,
                             pawn.Faction, out foundCell)) return;
                         pawn.Reserve(foundCell);
                         CurJob.SetTarget(TI_CELL, foundCell);
@@ -190,7 +191,7 @@ namespace Repair
                     initAction = () =>
                     {
                         Thing resultingThing;
-                        pawn.carrier.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out resultingThing);
+                        pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out resultingThing);
                     },
                     defaultCompleteMode = ToilCompleteMode.Instant
                 };
@@ -212,11 +213,14 @@ namespace Repair
                 if (targetQueue.NullOrEmpty())
                     return;
 
-                if (actor.carrier.CarriedThing == null)
+                if (actor.carryTracker.CarriedThing == null)
                 {
                     Log.Error("JumpToAlsoCollectTargetInQueue run on " + actor + " who is not carrying something.");
                     return;
                 }
+
+                if (actor.carryTracker.Full)
+                    return;
 
                 //Find an item in the queue matching what you're carrying
                 for (var i = 0; i < targetQueue.Count; i++)
@@ -226,7 +230,7 @@ namespace Repair
                         continue;
 
                     //Cannot stack with thing in hands - skip
-                    if (!targetQueue[i].Thing.CanStackWith(actor.carrier.CarriedThing))
+                    if (!targetQueue[i].Thing.CanStackWith(actor.carryTracker.CarriedThing))
                         continue;
 
                     //Too far away - skip
@@ -234,33 +238,52 @@ namespace Repair
                         continue;
 
                     //Determine num in hands
-                    var numInHands = (int) actor.carrier.CarriedThing?.stackCount;
+                    var numInHands = actor.carryTracker.CarriedThing?.stackCount ?? 0;
+                    var numToTake = Mathf.Min(Mathf.Min(curJob.countQueue[i], targetQueue[i].Thing.def.stackLimit - numInHands), actor.carryTracker.AvailableStackSpace(targetQueue[i].Thing.def));
 
-                    //Determine num to take
-                    var numToTake = curJob.numToBringList[i];
-                    if (numToTake + numInHands > targetQueue[i].Thing.def.stackLimit)
-                        numToTake = targetQueue[i].Thing.def.stackLimit - numInHands;
+                    if (numToTake <= 0)
+                        continue;
 
+                    //Set me to go get it
+                    curJob.count = numToTake;
+                    curJob.SetTarget(ind, targetQueue[i].Thing);
+
+                    List<int> intList;
+                    int index2;
+                    (intList = curJob.countQueue)[index2 = i] = intList[index2] - numToTake;
+
+                    //Remove from queue if I'm going to take all
+                    if (curJob.countQueue[i] == 0)
+                    {
+                        curJob.countQueue.RemoveAt(i);
+                        targetQueue.RemoveAt(i);
+                    }
+                    actor.jobs.curDriver.JumpToToil(gotoGetTargetToil);
+                    break;
+
+
+                    /*
                     //Won't take any - skip
-                    if (numToTake == 0)
+                    if (numToTake <= 0)
                         continue;
 
                     //Remove the amount to take from the num to bring list
-                    curJob.numToBringList[i] -= numToTake;
+                    curJob.countQueue[i] -= numToTake;
 
                     //Set me to go get it
                     curJob.maxNumToCarry = numInHands + numToTake;
                     curJob.SetTarget(ind, targetQueue[i].Thing);
 
                     //Remove from queue if I'm going to take all
-                    if (curJob.numToBringList[i] == 0)
+                    if (curJob.countQueue[i] == 0)
                     {
-                        curJob.numToBringList.RemoveAt(i);
+                        curJob.countQueue.RemoveAt(i);
                         targetQueue.RemoveAt(i);
                     }
 
                     actor.jobs.curDriver.JumpToToil(gotoGetTargetToil);
                     return;
+                    */
                 }
             };
 

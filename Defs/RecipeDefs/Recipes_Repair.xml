@@ -101,7 +101,7 @@
 						<li>Items</li>
 					</categories>
 					<thingDefs>
-						<li>ArtilleryShell</li>
+						<li>MortarShell</li>
 					</thingDefs>
 				</filter>
 				<count>1</count>
@@ -112,7 +112,7 @@
 				<li>Items</li>
 			</categories>
 			<thingDefs>
-				<li>ArtilleryShell</li>
+				<li>MortarShell</li>
 			</thingDefs>
 		</fixedIngredientFilter>
 		<products />

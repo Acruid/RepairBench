@@ -3,8 +3,6 @@
 	<name>Repair Workbench</name>
 	<author>Acruid</author>
 	<url />
-	<targetVersion>0.15.1284</targetVersion>
-	<description>WILL REQUIRE CCL WHEN IT IS UPDATED
-	
-Adds the Repair Workbench to the game so you can repair the durability of items.</description>
+	<targetVersion>0.16.1393</targetVersion>
+	<description>Adds the Repair Workbench to the game so you can repair the durability of items.</description>
 </ModMetaData>
