@@ -29,11 +29,28 @@ namespace Repair
             yield return Toils_Reserve.ReserveQueue(TI_ITEM);
 
             //these are initially set up by workgiver
-            var item = CurJob.GetTargetQueue(TI_ITEM)[0].Thing;
+            var itemTargetQueue = CurJob.GetTargetQueue(TI_ITEM);
+
+            if (itemTargetQueue.NullOrEmpty())
+            {
+                Log.Warning("RepBench: JobDriver - itemTargetQueue was null.");
+                yield return Toils_Reserve.Release(TI_REPBENCH);
+                yield return Toils_Reserve.Release(TI_ITEM);
+                yield break;
+            }
+
+            var firstTargetInfo = itemTargetQueue.First();
+            var item = firstTargetInfo.Thing;
+
             var table = CurJob.GetTarget(TI_REPBENCH).Thing as Building_WorkTable;
 
             if (table == null)
-                throw new Exception("RepBench: JobDriver - RepairTable was null.");
+            {
+                Log.Warning("RepBench: JobDriver - RepairTable was null.");
+                yield return Toils_Reserve.Release(TI_REPBENCH);
+                yield return Toils_Reserve.Release(TI_ITEM);
+                yield break;
+            }
 
             //Gather ingredients
             {
