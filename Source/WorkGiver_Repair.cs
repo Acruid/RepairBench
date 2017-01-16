@@ -331,7 +331,21 @@ namespace Repair
             {
                 case ResourceModes.REPAIR_KIT:
                     totalCost = new List<ThingCount>();
-                    var kitsToFetch = (itemDamaged.MaxHitPoints - itemDamaged.HitPoints) / Settings.HpPerPack;
+
+                    int hpPerPack;
+                    if (Settings.HpPercentage)
+                    {
+                        hpPerPack = (int) Math.Floor(itemDamaged.MaxHitPoints * (Settings.HpPerPack / 100.0f));
+                        if (hpPerPack == 0)
+                        {
+                            hpPerPack = 100;
+                            Log.Error($"RepairBench Error: Thing={itemDamaged}, MaxHitPoints={itemDamaged.MaxHitPoints}, Settings.HpPerPack={Settings.HpPerPack}, hpPercentage=true, hpPerPack=0%, did you put bad values in the config?");
+                        }
+                    }
+                    else
+                        hpPerPack = Settings.HpPerPack;
+
+                    var kitsToFetch = (itemDamaged.MaxHitPoints - itemDamaged.HitPoints) / hpPerPack;
                     totalCost.Add(new ThingCount(ThingDef.Named(Settings.THINGDEF_REPKIT), kitsToFetch));
                     break;
 
@@ -345,18 +359,18 @@ namespace Repair
                     foreach (var thingCount in totalCost)
                     {
                         var origCount = thingCount.Count;
-                        var damPercent = (itemDamaged.MaxHitPoints - itemDamaged.HitPoints)/(float) itemDamaged.MaxHitPoints;
-                        var newCount = (int)Math.Floor(origCount * damPercent * Settings.INGRED_REPAIR_PERCENT);
+                        var damPercent = (itemDamaged.MaxHitPoints - itemDamaged.HitPoints) / (float) itemDamaged.MaxHitPoints;
+                        var newCount = (int) Math.Floor(origCount * damPercent * Settings.INGRED_REPAIR_PERCENT);
                         thingCount.WithCount(newCount);
                         Log.Message($"origCount: {origCount} | damPer:{damPercent} | newCount:{newCount}");
                     }
                     break;
-            
+
                 default:
                     return new List<ThingCount>(0);
             }
-            
-            return totalCost.Where((tc) => tc.Count != 0).ToList();
+
+            return totalCost.Where(tc => tc.Count != 0).ToList();
         }
 
 

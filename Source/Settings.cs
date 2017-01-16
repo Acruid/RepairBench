@@ -96,6 +96,7 @@ namespace Repair
         internal static float SkillGain = 0.55f; // Skill gain per reptick
         internal const int HP_GAIN = 1; // durability regen per reptick
 
+        internal static bool HpPercentage = false; // is HpPerPack a percentage, or a flat value?
         internal static int HpPerPack = 5; // durability per kit
         internal const float INGRED_REPAIR_PERCENT = 1.0f; // percentage of ingredients required to repair item 100%
 

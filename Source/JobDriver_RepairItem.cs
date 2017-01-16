@@ -117,7 +117,7 @@ namespace Repair
                     item.HitPoints += Settings.HP_GAIN;
                     repairedAmount += Settings.HP_GAIN;
 
-                    if (Settings.ResourceMode == ResourceModes.REPAIR_KIT && repairedAmount%Settings.HpPerPack == 0)
+                    if (Settings.ResourceMode == ResourceModes.REPAIR_KIT && ShouldConsumeKit(repairedAmount, item.MaxHitPoints))
                     {
                         //TODO: investigate job.placedTargets instead of searching every time
                         Thing repkits = null;
@@ -215,6 +215,19 @@ namespace Repair
             }
 
             yield return Toils_Reserve.Release(TI_REPBENCH);
+        }
+
+        private static bool ShouldConsumeKit(int repairedAmount, int maxHP)
+        {
+            if(Settings.HpPercentage == false)
+            {
+                return repairedAmount % Settings.HpPerPack == 0;
+            }
+            else
+            {
+                var hpPerPack = (int)Math.Floor(maxHP * (Settings.HpPerPack / 100.0f));
+                return repairedAmount % hpPerPack == 0;
+            }
         }
 
         private static Toil JumpToCollectNextIntoHandsForBill(Toil gotoGetTargetToil, TargetIndex ind)
