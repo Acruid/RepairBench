@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Taken from Items_Luxury.xml -->
+
+  <RepairKit.label>修理工具</RepairKit.label>
+  <RepairKit.description>修理一件物品所需的工具资源。</RepairKit.description>
+
+
+</LanguageData>

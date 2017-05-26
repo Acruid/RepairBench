@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Imported from Buildings_Production.xml -->
+
+  <ElectricTableRepair.label>修理工作台（电动）</ElectricTableRepair.label>
+  <ElectricTableRepair.Description>一个装备齐全的电动修理工作台。</ElectricTableRepair.Description>
+  <ElectricTableRepair_Blueprint.label>修理工作台（电动）（蓝图）</ElectricTableRepair_Blueprint.label>
+  <ElectricTableRepair_Frame.label>修理工作台（电动）（建造中）</ElectricTableRepair_Frame.label>
+
+
+</LanguageData>

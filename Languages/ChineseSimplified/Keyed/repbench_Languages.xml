@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <Repair.tableTab>物品</Repair.tableTab>
+  <Repair.tabSuspend>中止</Repair.tabSuspend>
+  <Repair.tabStockpile>搬运到储存区</Repair.tabStockpile>
+  <Repair.tabOutside>室外的物品</Repair.tabOutside>
+  <Repair.tabSearch>搜索半径:</Repair.tabSearch>
+
+  <Repair.Mcm.ResourceModePrefix>资源</Repair.Mcm.ResourceModePrefix>
+  <Repair.Mcm.ResourceModeTip>修理一个物品所需的资源。</Repair.Mcm.ResourceModeTip>
+  <Repair.Mcm.RepairRateText>ticks / HP</Repair.Mcm.RepairRateText>
+  <Repair.Mcm.RepairRateTip>要花多少秒才能修复一点HP (60 ticks = 1 秒)。</Repair.Mcm.RepairRateTip>
+  <Repair.Mcm.HpPerPackText>HP / 修理工具</Repair.Mcm.HpPerPackText>
+  <Repair.Mcm.HpPerPackTip>每个修理工具能够修理多少HP。</Repair.Mcm.HpPerPackTip>
+
+</LanguageData>

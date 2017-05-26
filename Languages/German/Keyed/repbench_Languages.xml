@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<Repair.tableTab>Gegenstände</Repair.tableTab>
+	<Repair.tabSuspend>unterbechen</Repair.tabSuspend>
+	<Repair.tabStockpile>Trage ins Lager</Repair.tabStockpile>
+	<Repair.tabOutside>Außenbereich Gegenstände</Repair.tabOutside>
+	<Repair.tabSearch>Suchradius:</Repair.tabSearch>
+
+	<Repair.Mcm.ResourceModePrefix>Rohstoff</Repair.Mcm.ResourceModePrefix>
+	<Repair.Mcm.ResourceModeTip>Genutzte Rohstoffe zur Reperatur von Gegenständen.</Repair.Mcm.ResourceModeTip>
+	<Repair.Mcm.RepairRateText>Ticks / HP</Repair.Mcm.RepairRateText>
+	<Repair.Mcm.RepairRateTip>Wie viele Ticks benötigt werden um 1 HP zu reparieren (60 ticks = 1 Sekunde).</Repair.Mcm.RepairRateTip>
+	<Repair.Mcm.HpPerPackText>HP / Reperatur kit</Repair.Mcm.HpPerPackText>
+	<Repair.Mcm.HpPerPackTip>Wie viel HP ein Reperatur kit wiederherstellt.</Repair.Mcm.HpPerPackTip>
+</LanguageData>

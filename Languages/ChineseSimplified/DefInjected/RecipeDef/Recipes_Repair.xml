@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <MakeRepairKit.label>制作修理工具</MakeRepairKit.label>
+  <MakeRepairKit.description>制作10个修理工具。</MakeRepairKit.description>
+  <MakeRepairKit.jobString>正在制作修理工具。</MakeRepairKit.jobString>
+
+  <RepairItemApparel.label>修补衣物</RepairItemApparel.label>
+  <RepairItemApparel.description>在修理工作台上修补衣物。</RepairItemApparel.description>
+  <RepairItemApparel.jobString>正在修补衣物。</RepairItemApparel.jobString>
+
+  <RepairItemMisc.label>修理杂项</RepairItemMisc.label>
+  <RepairItemMisc.description>在修理工作台上修理杂项。</RepairItemMisc.description>
+  <RepairItemMisc.jobString>正在修理杂项。</RepairItemMisc.jobString>
+
+  <RepairItemWeapon.label>修理武器</RepairItemWeapon.label>
+  <RepairItemWeapon.description>在修理工作台上修理武器。</RepairItemWeapon.description>
+  <RepairItemWeapon.jobString>正在修理武器。</RepairItemWeapon.jobString>
+
+
+</LanguageData>

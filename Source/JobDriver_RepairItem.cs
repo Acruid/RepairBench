@@ -94,7 +94,7 @@ namespace Repair
                 initAction = () =>
                 {
                     Debug.PrintLine("repairToil.PreInit");
-                    CurJob.bill.Notify_DoBillStarted();
+                    CurJob.bill.Notify_DoBillStarted(pawn);
                     Debug.PrintLine("repairToil.PostInit");
                 },
 
@@ -179,7 +179,7 @@ namespace Repair
 
             yield return Toils_Haul.StartCarryThing(TI_ITEM);
 
-            if (CurJob.bill.GetStoreMode() == BillStoreMode.BestStockpile)
+            if (CurJob.bill.GetStoreMode() == BillStoreModeDefOf.DropOnFloor)
             {
                 yield return new Toil
                 {

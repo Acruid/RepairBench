@@ -51,7 +51,7 @@ namespace Repair
             }
         }
 
-        public override Job JobOnThing(Pawn pawn, Thing bench)
+        public override Job JobOnThing(Pawn pawn, Thing bench, bool forced = false)
         {
             var giver = bench as IBillGiver;
 
