@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ModMetaData>
-	<name>Repair Workbench</name>
+	<name>Repair Workbench REPO</name>
 	<author>Acruid</author>
 	<url />
-	<targetVersion>0.17.1546</targetVersion>
+	<targetVersion>0.18.1722</targetVersion>
 	<description>Adds the Repair Workbench to the game so you can repair the durability of items.</description>
 </ModMetaData>

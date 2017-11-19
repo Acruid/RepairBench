@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ThingDefs>
+<Defs>
 
 	<!-- Imported from Buildings_Art.xml -->
 	<ThingDef Name="BuildingBase" Abstract="True">
@@ -21,10 +21,10 @@
 	</ThingDef>
 
 	<ThingDef ParentName="BenchBase">
-		<DefName>ElectricTableRepair</DefName>
+		<defName>ElectricTableRepair</defName>
 		<label>electric repair bench</label>
-		<ThingClass>Building_WorkTable</ThingClass>
-		<Description>A workbench equipped with all the tools required to repair damaged items.</Description>
+		<thingClass>Building_WorkTable</thingClass>
+		<description>A workbench equipped with all the tools required to repair damaged items.</description>
 		<graphicData>
 			<texPath>Things/Building/Production/TableRepair</texPath>
 			<graphicClass>Graphic_Multi</graphicClass>
@@ -37,15 +37,15 @@
 			</damageData>
 		</graphicData>
 		<costStuffCount>75</costStuffCount>
-		<CostList>
+		<costList>
 			<Steel>50</Steel>
 			<Component>3</Component>
-		</CostList>
+		</costList>
 		<stuffCategories>
 			<li>Metallic</li>
 			<li>Woody</li>
 		</stuffCategories>
-		<AltitudeLayer>Building</AltitudeLayer>
+		<altitudeLayer>Building</altitudeLayer>
 		<fillPercent>0.5</fillPercent>
 		<useHitPoints>True</useHitPoints>
 		<statBases>
@@ -53,9 +53,9 @@
 			<MaxHitPoints>180</MaxHitPoints>
 			<Flammability>1.0</Flammability>
 		</statBases>
-		<Size>(3,1)</Size>
-		<DesignationCategory>Production</DesignationCategory>
-		<Passability>PassThroughOnly</Passability>
+		<size>(3,1)</size>
+		<designationCategory>Production</designationCategory>
+		<passability>PassThroughOnly</passability>
 		<pathCost>70</pathCost>
 		<hasInteractionCell>True</hasInteractionCell>
 		<interactionCellOffset>(0,0,-1)</interactionCellOffset>
@@ -89,4 +89,4 @@
 		</researchPrerequisites>
 	</ThingDef>
 	
-</ThingDefs>
+</Defs>

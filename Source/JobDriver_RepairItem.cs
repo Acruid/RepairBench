@@ -16,6 +16,11 @@ namespace Repair
         private const TargetIndex TI_ITEM = TargetIndex.B;
         private const TargetIndex TI_CELL = TargetIndex.C;
 
+        public override bool TryMakePreToilReservations()
+        {
+            return true;
+        }
+
         protected override IEnumerable<Toil> MakeNewToils()
         {
             //This toil is yielded later
@@ -29,7 +34,7 @@ namespace Repair
             yield return Toils_Reserve.ReserveQueue(TI_ITEM);
 
             //these are initially set up by workgiver
-            var itemTargetQueue = CurJob.GetTargetQueue(TI_ITEM);
+            var itemTargetQueue = job.GetTargetQueue(TI_ITEM);
 
             if (itemTargetQueue.NullOrEmpty())
             {
@@ -42,7 +47,7 @@ namespace Repair
             var firstTargetInfo = itemTargetQueue.First();
             var item = firstTargetInfo.Thing;
 
-            var table = CurJob.GetTarget(TI_REPBENCH).Thing as Building_WorkTable;
+            var table = job.GetTarget(TI_REPBENCH).Thing as Building_WorkTable;
 
             if (table == null)
             {
@@ -94,7 +99,7 @@ namespace Repair
                 initAction = () =>
                 {
                     Debug.PrintLine("repairToil.PreInit");
-                    CurJob.bill.Notify_DoBillStarted(pawn);
+                    job.bill.Notify_DoBillStarted(pawn);
                     Debug.PrintLine("repairToil.PostInit");
                 },
 
@@ -103,8 +108,8 @@ namespace Repair
 //                    Debug.PrintLine("repairToil.tick.Check");
 //                    pawn.jobs.CheckForJobOverride();
 
-                    CurJob.bill.Notify_PawnDidWork(pawn);
-                    CurJob.SetTarget(TargetIndex.B, item);
+                    job.bill.Notify_PawnDidWork(pawn);
+                    job.SetTarget(TargetIndex.B, item);
 
                     pawn.skills.Learn(SkillDefOf.Crafting, Settings.SkillGain);
                     pawn.GainComfortFromCellIfPossible();
@@ -170,7 +175,7 @@ namespace Repair
                 initAction = () =>
                 {
                     var list = new List<Thing> { item };
-                    CurJob.bill.Notify_IterationCompleted(pawn, list);
+                    job.bill.Notify_IterationCompleted(pawn, list);
                     RecordsUtility.Notify_BillDone(pawn, list);
                 }
             };
@@ -179,17 +184,16 @@ namespace Repair
 
             yield return Toils_Haul.StartCarryThing(TI_ITEM);
 
-            if (CurJob.bill.GetStoreMode() == BillStoreModeDefOf.DropOnFloor)
+            if (job.bill.GetStoreMode() == BillStoreModeDefOf.BestStockpile)
             {
                 yield return new Toil
                 {
                     initAction = () =>
                     {
-                        IntVec3 foundCell;
                         if (!StoreUtility.TryFindBestBetterStoreCellFor(item, pawn, pawn.Map, StoragePriority.Unstored,
-                            pawn.Faction, out foundCell)) return;
-                        pawn.Reserve(foundCell);
-                        CurJob.SetTarget(TI_CELL, foundCell);
+                            pawn.Faction, out var foundCell)) return;
+                        pawn.Reserve(foundCell, job);
+                        job.SetTarget(TI_CELL, foundCell);
                     }
                 };
 

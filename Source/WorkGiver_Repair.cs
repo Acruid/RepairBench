@@ -55,7 +55,7 @@ namespace Repair
         {
             var giver = bench as IBillGiver;
 
-            if (giver == null || !ThingIsUsableBillGiver(bench) || !giver.CurrentlyUsable() || !giver.BillStack.AnyShouldDoNow || bench.IsBurning() || bench.IsForbidden(pawn))
+            if (giver == null || !ThingIsUsableBillGiver(bench) || !giver.CurrentlyUsableForBills() || !giver.BillStack.AnyShouldDoNow || bench.IsBurning() || bench.IsForbidden(pawn))
                 return null;
 
             if (!pawn.CanReserve(bench))
@@ -74,7 +74,7 @@ namespace Repair
             foreach (var bill in giver.BillStack)
             {
                 if ((bill.recipe.requiredGiverWorkType != null && bill.recipe.requiredGiverWorkType != def.workType) || 
-                    (Find.TickManager.TicksGame < bill.lastIngredientSearchFailTicks + ReCheckFailedBillTicksRange.RandomInRange && !FloatMenuMakerMap.making) || 
+                    (Find.TickManager.TicksGame < bill.lastIngredientSearchFailTicks + ReCheckFailedBillTicksRange.RandomInRange && FloatMenuMakerMap.makingFor != pawn) || 
                     !bill.ShouldDoNow() || !bill.PawnAllowedToStartAnew(pawn))
                     continue;
 
@@ -99,7 +99,7 @@ namespace Repair
                         return StartNewRepairJob(bill, giver, item, chosenIngThings);
                 }
 
-                if (!FloatMenuMakerMap.making)
+                if (FloatMenuMakerMap.makingFor != pawn)
                     bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
             }
             

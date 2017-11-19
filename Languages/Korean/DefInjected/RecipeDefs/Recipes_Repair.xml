@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+    <MakeRepairKit.label>수리도구 만들기</MakeRepairKit.label>
+    <MakeRepairKit.description>수리도구를 10개 제작합니다.</MakeRepairKit.description>
+    <MakeRepairKit.jobString>수리도구 만드는중.</MakeRepairKit.jobString>
+
+    <RepairItemApparel.label>의복 수리하기</RepairItemApparel.label>
+    <RepairItemApparel.description>수리작업대에서 의복을 수리합니다.</RepairItemApparel.description>
+    <RepairItemApparel.jobString>의복 수리중.</RepairItemApparel.jobString>
+
+    <RepairItemMisc.label>물건 수리하기</RepairItemMisc.label>
+    <RepairItemMisc.description>수리작업대에서 물건을 수리합니다.</RepairItemMisc.description>
+    <RepairItemMisc.jobString>물건 수리중.</RepairItemMisc.jobString>
+
+    <RepairItemWeapon.label>무기 수리하기</RepairItemWeapon.label>
+    <RepairItemWeapon.description>수리작업대에서 무기를 수리합니다.</RepairItemWeapon.description>
+    <RepairItemWeapon.jobString>무기 수리중</RepairItemWeapon.jobString>
+
+</LanguageData>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+    <RepairItem.label>물건 수리</RepairItem.label>
+    <RepairItem.verb>물건 수리</RepairItem.verb>
+    <RepairItem.gerund>물건 수리중</RepairItem.gerund>
+
+</LanguageData>

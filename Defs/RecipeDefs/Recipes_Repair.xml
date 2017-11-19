@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<RecipeDefs>
+<Defs>
 
 	<RecipeDef>
 		<defName>MakeRepairKit</defName>
@@ -99,10 +99,8 @@
 				<filter>
 					<categories>
 						<li>Items</li>
+						<li>MortarShells</li>
 					</categories>
-					<thingDefs>
-						<li>MortarShell</li>
-					</thingDefs>
 				</filter>
 				<count>1</count>
 			</li>
@@ -110,10 +108,8 @@
 		<fixedIngredientFilter>
 			<categories>
 				<li>Items</li>
+				<li>MortarShells</li>
 			</categories>
-			<thingDefs>
-				<li>MortarShell</li>
-			</thingDefs>
 		</fixedIngredientFilter>
 		<products />
 		<recipeUsers>
@@ -154,4 +150,4 @@
 		</recipeUsers>
 	</RecipeDef>
 
-</RecipeDefs>
+</Defs>
