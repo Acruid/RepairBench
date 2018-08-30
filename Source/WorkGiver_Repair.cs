@@ -12,7 +12,7 @@ namespace Repair
     // ReSharper disable once UnusedMember.Global
     internal class WorkGiver_Repair : WorkGiver_Scanner
     {
-        private readonly List<ThingAmount> chosenIngThings;
+        private readonly List<ThingCount> chosenIngThings;
         private static readonly IntRange ReCheckFailedBillTicksRange;
         private static string _missingMaterialsTranslated;
         private static string _missingSkillTranslated;
@@ -23,12 +23,13 @@ namespace Repair
 
         public WorkGiver_Repair()
         {
-            chosenIngThings = new List<ThingAmount>();
+            chosenIngThings = new List<ThingCount>();
+
             if (_missingSkillTranslated == null)
                 _missingSkillTranslated = "MissingSkill".Translate();
-            if (_missingMaterialsTranslated != null)
-                return;
-            _missingMaterialsTranslated = "MissingMaterials".Translate();
+
+            if (_missingMaterialsTranslated == null)
+                _missingMaterialsTranslated = "MissingMaterials".Translate();
         }
 
         static WorkGiver_Repair()
@@ -38,6 +39,13 @@ namespace Repair
             NewRelevantThings = new List<Thing>();
             AssignedThings = new HashSet<Thing>();
             AvailableCounts = new DefCountList();
+        }
+
+        public override PathEndMode PathEndMode => PathEndMode.InteractionCell;
+
+        public override Danger MaxPathDanger(Pawn pawn)
+        {
+            return Danger.Some;
         }
 
         public override ThingRequest PotentialWorkThingRequest
@@ -57,10 +65,7 @@ namespace Repair
 
             if (giver == null || !ThingIsUsableBillGiver(bench) || !giver.CurrentlyUsableForBills() || !giver.BillStack.AnyShouldDoNow || bench.IsBurning() || bench.IsForbidden(pawn))
                 return null;
-
-            if (!pawn.CanReserve(bench))
-                return null;
-
+            
             if (!pawn.CanReserveAndReach(bench.InteractionCell, PathEndMode.OnCell, Danger.Some))
                 return null;
             
@@ -247,7 +252,7 @@ namespace Repair
                     def.billGiversAllMechanoidsCorpses && pawn2.RaceProps.IsMechanoid || def.billGiversAllAnimalsCorpses && pawn2.RaceProps.Animal);
         }
 
-        private static bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingAmount> chosen, Thing itemDamaged)
+        private static bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingCount> chosen, Thing itemDamaged)
         {
             chosen.Clear();
 
@@ -295,12 +300,12 @@ namespace Repair
                 if (NewRelevantThings.Count <= 0)
                     return false;
 
-                Comparison<Thing> comparison =
-                    (t1, t2) =>
-                        (t1.Position - pawn.Position).LengthHorizontalSquared.CompareTo((t2.Position - pawn.Position).LengthHorizontalSquared);
-                NewRelevantThings.Sort(comparison);
+                int Comparison(Thing t1, Thing t2) => (t1.Position - pawn.Position).LengthHorizontalSquared.CompareTo((t2.Position - pawn.Position).LengthHorizontalSquared);
+
+                NewRelevantThings.Sort(Comparison);
                 RelevantThings.AddRange(NewRelevantThings);
                 NewRelevantThings.Clear();
+
                 if (TryFindBestBillIngredientsInSet_NoMix(RelevantThings, neededIngreds, chosen))
                 {
                     foundAll = true;
@@ -324,13 +329,13 @@ namespace Repair
         /// </summary>
         /// <param name="itemDamaged">The item to be repaired.</param>
         /// <returns></returns>
-        private static List<ThingCount> CalculateTotalIngredients(Thing itemDamaged)
+        private static List<ThingDefCount> CalculateTotalIngredients(Thing itemDamaged)
         {
-            List<ThingCount> totalCost;
+            List<ThingDefCount> totalCost;
             switch (Settings.ResourceMode)
             {
                 case ResourceModes.REPAIR_KIT:
-                    totalCost = new List<ThingCount>();
+                    totalCost = new List<ThingDefCount>(1);
 
                     int hpPerPack;
                     if (Settings.HpPercentage)
@@ -346,15 +351,15 @@ namespace Repair
                         hpPerPack = Settings.HpPerPack;
 
                     var kitsToFetch = (itemDamaged.MaxHitPoints - itemDamaged.HitPoints) / hpPerPack;
-                    totalCost.Add(new ThingCount(ThingDef.Named(Settings.THINGDEF_REPKIT), kitsToFetch));
+                    totalCost.Add(new ThingDefCount(ThingDef.Named(Settings.THINGDEF_REPKIT), kitsToFetch));
                     break;
 
                 case ResourceModes.INGREDIENTS:
 
                     //tmpTotalCost is cached, DO NOT MODIFY IT
                     var tmpTotalCost = itemDamaged.CostListAdjusted();
-                    totalCost = new List<ThingCount>(tmpTotalCost.Count);
-                    totalCost.AddRange(tmpTotalCost.Select(thingCount => new ThingCount(thingCount.thingDef, thingCount.count)));
+                    totalCost = new List<ThingDefCount>(tmpTotalCost.Count);
+                    totalCost.AddRange(tmpTotalCost.Select(thingCount => new ThingDefCount(thingCount.thingDef, thingCount.count)));
 
                     foreach (var thingCount in totalCost)
                     {
@@ -367,14 +372,13 @@ namespace Repair
                     break;
 
                 default:
-                    return new List<ThingCount>(0);
+                    return new List<ThingDefCount>(0);
             }
 
             return totalCost.Where(tc => tc.Count != 0).ToList();
         }
 
-
-        private static bool TryFindBestBillIngredientsInSet_NoMix(List<Thing> availableThings, List<ThingCount> neededIngreds, List<ThingAmount> chosen)
+        private static bool TryFindBestBillIngredientsInSet_NoMix(List<Thing> availableThings, List<ThingDefCount> neededIngreds, List<ThingCount> chosen)
         {
             chosen.Clear();
             AssignedThings.Clear();
@@ -396,7 +400,7 @@ namespace Repair
                             continue;
 
                         var countToAdd = Mathf.Min(Mathf.FloorToInt(f), item.stackCount);
-                        ThingAmount.AddToList(chosen, item, countToAdd);
+                        ThingCountUtility.AddToList(chosen, item, countToAdd);
                         f -= countToAdd;
                         AssignedThings.Add(item);
                         if (f < 1.0/1000.0)
@@ -424,7 +428,7 @@ namespace Repair
         /// <param name="itemDamaged">Damaged item to be repaired.</param>
         /// <param name="ingredients">Resources to consume for repair.</param>
         /// <returns></returns>
-        private static Job StartNewRepairJob(Bill bill, IBillGiver workbench, Thing itemDamaged, IList<ThingAmount> ingredients)
+        private static Job StartNewRepairJob(Bill bill, IBillGiver workbench, Thing itemDamaged, IList<ThingCount> ingredients)
         {
             // create the new job
             var job = new Job(DefDatabase<JobDef>.GetNamed(Settings.JOBDEF_REPAIR), (Thing) workbench)
@@ -442,8 +446,8 @@ namespace Repair
             // add ingredients
             for (var index = 0; index < ingredients.Count; ++index)
             {
-                job.targetQueueB.Add(ingredients[index].thing);
-                job.countQueue.Add(ingredients[index].count);
+                job.targetQueueB.Add(ingredients[index].Thing);
+                job.countQueue.Add(ingredients[index].Count);
             }
 
             return job;

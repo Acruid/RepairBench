@@ -1,30 +1,53 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-	<!-- Imported from Buildings_Art.xml -->
-	<ThingDef Name="BuildingBase" Abstract="True">
+	<!-- Imported from Buildings_Base.xml -->
+	  <ThingDef Name="BuildingBase" Abstract="True">
 		<category>Building</category>
 		<thingClass>Building</thingClass>
-		<soundImpactDefault>BulletImpactMetal</soundImpactDefault>
+		<soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
 		<selectable>true</selectable>
 		<drawerType>MapMeshAndRealTime</drawerType>
 		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
 		<repairEffect>Repair</repairEffect>
 		<leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
-		<filthLeaving>BuildingRubble</filthLeaving>
-	</ThingDef>
+		<filthLeaving>Filth_RubbleBuilding</filthLeaving>
+			<statBases>
+				<SellPriceFactor>0.70</SellPriceFactor>
+			</statBases>
+	  </ThingDef>
 
 	<!-- Imported from Buildings_Production.xml -->
 	<ThingDef Name="BenchBase" ParentName="BuildingBase" Abstract="True">
-		<castEdgeShadows>true</castEdgeShadows>
-		<staticSunShadowHeight>0.20</staticSunShadowHeight>
+		<canOverlapZones>false</canOverlapZones>
+		<minifiedDef>MinifiedThing</minifiedDef>
+		<terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+		<thingCategories>
+		  <li>BuildingsProduction</li>
+		</thingCategories>
+		<statBases>
+		  <Mass>20</Mass>
+		</statBases>
+		<building>
+		  <workSpeedPenaltyOutdoors>true</workSpeedPenaltyOutdoors>
+		  <workSpeedPenaltyTemperature>true</workSpeedPenaltyTemperature>
+		</building>
+		<interactionCellIcon>DiningChair</interactionCellIcon>
+		<comps>
+		  <li>
+			<compClass>CompReportWorkSpeed</compClass>
+		  </li>
+		</comps>
+		<placeWorkers>
+		  <li>PlaceWorker_ReportWorkSpeedPenalties</li>
+		</placeWorkers>
 	</ThingDef>
 
 	<ThingDef ParentName="BenchBase">
 		<defName>ElectricTableRepair</defName>
 		<label>electric repair bench</label>
 		<thingClass>Building_WorkTable</thingClass>
-		<description>A workbench equipped with all the tools required to repair damaged items.</description>
+		<description>A workbench equipped with all the tools required to repair damaged items. Can work without electricity at 50% of normal speed.</description>
 		<graphicData>
 			<texPath>Things/Building/Production/TableRepair</texPath>
 			<graphicClass>Graphic_Multi</graphicClass>
@@ -36,10 +59,12 @@
 				<cornerBR>Damage/Corner</cornerBR>
 			</damageData>
 		</graphicData>
+		<castEdgeShadows>true</castEdgeShadows>
+		<staticSunShadowHeight>0.20</staticSunShadowHeight>
 		<costStuffCount>75</costStuffCount>
 		<costList>
 			<Steel>50</Steel>
-			<Component>3</Component>
+			<ComponentIndustrial>3</ComponentIndustrial>
 		</costList>
 		<stuffCategories>
 			<li>Metallic</li>
@@ -70,7 +95,7 @@
 		<comps>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
-				<startElectricalFires>true</startElectricalFires>
+				<shortCircuitInRain>true</shortCircuitInRain>
 				<basePowerConsumption>120</basePowerConsumption>
 			</li>
 			<li Class="CompProperties_Flickable"/>

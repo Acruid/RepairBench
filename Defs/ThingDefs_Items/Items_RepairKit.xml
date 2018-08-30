@@ -37,6 +37,7 @@
 		<statBases>
 			<MaxHitPoints>100</MaxHitPoints>
 			<MarketValue>3.50</MarketValue>
+			<Mass>0.50</Mass>
 			<Flammability>1.0</Flammability>
 			<DeteriorationRate>2</DeteriorationRate>
 		</statBases>

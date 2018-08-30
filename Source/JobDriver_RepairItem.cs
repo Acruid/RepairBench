@@ -16,8 +16,12 @@ namespace Repair
         private const TargetIndex TI_ITEM = TargetIndex.B;
         private const TargetIndex TI_CELL = TargetIndex.C;
 
-        public override bool TryMakePreToilReservations()
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
+            if (!pawn.Reserve(job.GetTarget(TI_REPBENCH), job, 1, -1, null, errorOnFailed))
+                return false;
+
+            pawn.ReserveAsManyAsPossible(job.GetTargetQueue(TI_ITEM), job);
             return true;
         }
 
