@@ -11,5 +11,9 @@
 	<Repair.Mcm.RepairRateText>Ticks / HP</Repair.Mcm.RepairRateText>
 	<Repair.Mcm.RepairRateTip>How long it takes in ticks to repair 1 HP (60 ticks = 1 second).</Repair.Mcm.RepairRateTip>
 	<Repair.Mcm.HpPerPackText>HP / Repair kit</Repair.Mcm.HpPerPackText>
-	<Repair.Mcm.HpPerPackTip>How much HP a repair kit heals.</Repair.Mcm.HpPerPackTip>
+	<Repair.Mcm.HpPerPackTip>How much total HP a kit repairs.</Repair.Mcm.HpPerPackTip>
+	<Repair.Mcm.SkillMultText>Pawn Skill Multiplier</Repair.Mcm.SkillMultText>
+	<Repair.Mcm.SkillMultTip>Skill gain multiplier per HP repaired. This is base skill gain, not the numbers you see ingame (Default: 0.55).</Repair.Mcm.SkillMultTip>
+	<Repair.Mcm.PercentModeText>Percent Mode</Repair.Mcm.PercentModeText>
+	<Repair.Mcm.PercentModeTip>Kits repair a percentage of HP instead of a fixed amount.</Repair.Mcm.PercentModeTip>
 </LanguageData>

@@ -6,7 +6,7 @@ using Verse;
 
 namespace Repair
 {
-    internal static class Settings
+    internal class Settings : ModSettings
     {
         // Static constructor is called 'sometime' before the first member access
         static Settings()
@@ -84,6 +84,8 @@ namespace Repair
                 }
             }
         }
+
+        internal const string MOD_NAME = "Repair Workbench";
 
         #region Settings
 
