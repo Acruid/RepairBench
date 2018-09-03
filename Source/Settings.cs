@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml;
+using UnityEngine;
 using Verse;
 
 namespace Repair
@@ -11,77 +13,50 @@ namespace Repair
         // Static constructor is called 'sometime' before the first member access
         static Settings()
         {
-            var configPath = Path.Combine(GenFilePaths.SaveDataFolderPath, @"Config\RepairBench.xml");
+            var configPath = Path.Combine(GenFilePaths.SaveDataFolderPath, @"Config/RepairBench.xml");
 
             if (!File.Exists(configPath))
+                return;
+
+            try
             {
-                Debug.PrintLine($"RepairBench: Creating config file: {configPath}");
+                Debug.PrintLine($"RepairBench: Loading config file: {configPath}");
 
                 var doc = new XmlDocument();
+                doc.LoadXml(File.ReadAllText(configPath));
 
-                doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
+                if (doc.DocumentElement == null)
+                    return;
 
-                var settingsNode = doc.CreateElement(typeof(Settings).Name);
-                doc.AppendChild(settingsNode);
+                Debug.PrintLine(doc.DocumentElement.Name);
 
-                var fieldsInfo = typeof(Settings).GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                foreach (var field in fieldsInfo)
+                foreach (XmlNode node in doc.DocumentElement.ChildNodes)
                 {
-                    // filter constants
-                    if (field.IsLiteral)
+                    // ignore comments
+                    if (node is XmlComment)
                         continue;
 
-                    var value = field.GetValue(null);
-                    var str = (string) Convert.ChangeType(value, typeof(string));
-
-                    XmlNode nameNode = doc.CreateElement(field.Name);
-                    nameNode.AppendChild(doc.CreateTextNode(str));
-                    settingsNode.AppendChild(nameNode);
-                }
-
-                doc.Save(configPath);
-            }
-            else
-            {
-                try
-                {
-                    Debug.PrintLine($"RepairBench: Loading config file: {configPath}");
-
-                    var doc = new XmlDocument();
-                    doc.LoadXml(File.ReadAllText(configPath));
-
-                    if (doc.DocumentElement == null)
-                        return;
-
-                    Debug.PrintLine(doc.DocumentElement.Name);
-
-                    foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+                    // if this looks like a val (it should be)
+                    if (node.ChildNodes.Count == 1 && node.FirstChild.NodeType == XmlNodeType.Text)
                     {
-                        // ignore comments
-                        if (node is XmlComment)
+                        var fieldInfo = typeof(Settings).GetField(node.Name,
+                            BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+                        if (fieldInfo == null)
                             continue;
 
-                        // if this looks like a val (it should be)
-                        if (node.ChildNodes.Count == 1 && node.FirstChild.NodeType == XmlNodeType.Text)
-                        {
-                            var fieldInfo = typeof(Settings).GetField(node.Name,
-                                BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                        var value = fieldInfo.FieldType.IsEnum ? Enum.Parse(fieldInfo.FieldType, node.InnerText) : Convert.ChangeType(node.InnerText, fieldInfo.FieldType);
 
-                            if (fieldInfo == null)
-                                continue;
-
-                            var value = fieldInfo.FieldType.IsEnum ? 
-                                Enum.Parse(fieldInfo.FieldType, node.InnerText) : 
-                                Convert.ChangeType(node.InnerText, fieldInfo.FieldType);
-
-                            fieldInfo.SetValue(null, value);
-                        }
+                        fieldInfo.SetValue(null, value);
                     }
                 }
-                catch (Exception e)
-                {
-                    Log.Error($"RepairBench: LoadXML: {e}");
-                }
+
+                // remove old xml file, we don't need it anymore
+                File.Delete(configPath);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"RepairBench: LoadXML: {e}");
             }
         }
 
@@ -103,6 +78,72 @@ namespace Repair
         internal const float INGRED_REPAIR_PERCENT = 1.0f; // percentage of ingredients required to repair item 100%
 
         #endregion
+
+        /// <summary>
+        ///     Serializes mod settings.
+        /// </summary>
+        public override void ExposeData()
+        {
+            base.ExposeData();
+
+            Scribe_Values.Look(ref HpPercentage, "percentMode");
+            Scribe_Values.Look(ref ResourceMode, "resMode", ResourceModes.REPAIR_KIT);
+            Scribe_Values.Look(ref RepairRate, "repairRate", 60);
+            Scribe_Values.Look(ref SkillGain, "skillGain", 0.55f);
+            Scribe_Values.Look(ref HpPerPack, "HpPerPack", 5);
+        }
+
+        public static void DoSettingsWindowContents(Rect inRect)
+        {
+            string ticksBuffer = null;
+            string skillBuffer = null;
+            string packBuffer = null;
+
+            var list = new Listing_Standard(GameFont.Small);
+            list.ColumnWidth = inRect.width / 2;
+            var centerRect = new Rect(inRect.x + inRect.width / 4, inRect.y, inRect.width - inRect.width / 2, inRect.height).Rounded();
+            list.Begin(centerRect);
+
+            list.Gap();
+
+            var lineRect = list.GetRect(Text.LineHeight).Rounded();
+            TooltipHandler.TipRegion(lineRect, "Repair.Mcm.ResourceModeTip".Translate());
+            if (Widgets.ButtonText(lineRect, "Repair.Mcm.ResourceModePrefix".Translate() + " : " + Enum.GetName(typeof(ResourceModes), Settings.ResourceMode)))
+            {
+                var options = new List<FloatMenuOption>();
+                foreach (var num in Enum.GetValues(typeof(ResourceModes)))
+                {
+                    var mode = (ResourceModes)num;
+
+                    if (mode == ResourceModes.ERROR)
+                        continue;
+
+                    options.Add(new FloatMenuOption(Enum.GetName(typeof(ResourceModes), mode).CapitalizeFirst(), () => { Settings.ResourceMode = mode; }));
+                }
+
+                Find.WindowStack.Add(new FloatMenu(options));
+            }
+
+            list.Gap(6);
+            lineRect = list.GetRect(Text.LineHeight);
+            TooltipHandler.TipRegion(lineRect, "Repair.Mcm.RepairRateTip".Translate());
+            Widgets.TextFieldNumericLabeled(lineRect, "Repair.Mcm.RepairRateText".Translate(), ref Settings.RepairRate, ref ticksBuffer, 1);
+
+            list.Gap(6);
+            lineRect = list.GetRect(Text.LineHeight);
+            TooltipHandler.TipRegion(lineRect, "Repair.Mcm.SkillMultTip".Translate());
+            Widgets.TextFieldNumericLabeled(lineRect, "Repair.Mcm.SkillMultText".Translate(), ref Settings.SkillGain, ref skillBuffer, 0, 1);
+
+            list.Gap(6);
+            lineRect = list.GetRect(Text.LineHeight);
+            TooltipHandler.TipRegion(lineRect, "Repair.Mcm.HpPerPackTip".Translate());
+            Widgets.TextFieldNumericLabeled(lineRect, "Repair.Mcm.HpPerPackText".Translate(), ref Settings.HpPerPack, ref packBuffer, 1);
+
+            list.Gap(6);
+            list.CheckboxLabeled("Repair.Mcm.PercentModeText".Translate(), ref Settings.HpPercentage, "Repair.Mcm.PercentModeTip".Translate());
+
+            list.End();
+        }
     }
 
     internal enum ResourceModes
