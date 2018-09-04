@@ -6,6 +6,9 @@
 	<Repair.tabOutside>Outside Items</Repair.tabOutside>
 	<Repair.tabSearch>Search Radius:</Repair.tabSearch>
 
+	<Repair.BenchNoItems>No items found to repair.</Repair.BenchNoItems>
+	<Repair.BenchNoMats>Missing materials to repair any damaged items.</Repair.BenchNoMats>
+	
 	<Repair.Mcm.ResourceModePrefix>Resource</Repair.Mcm.ResourceModePrefix>
 	<Repair.Mcm.ResourceModeTip>Resources used to repair an item.</Repair.Mcm.ResourceModeTip>
 	<Repair.Mcm.RepairRateText>Ticks / HP</Repair.Mcm.RepairRateText>

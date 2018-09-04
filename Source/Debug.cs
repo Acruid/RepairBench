@@ -6,11 +6,9 @@ namespace Repair
 {
     internal static class Debug
     {
-        private static readonly bool Enabled = false;
-
         internal static void PrintLine(string line)
         {
-            if (!Enabled)
+            if (!Settings.DebugEnabled)
                 return;
 
             Log.Message(line);
@@ -18,7 +16,7 @@ namespace Repair
 
         internal static void PrintList<T>(string title, IEnumerable<T> list)
         {
-            if (!Enabled)
+            if (!Settings.DebugEnabled)
                 return;
 
             Log.Message("-- DebugList - "+ title + " --");

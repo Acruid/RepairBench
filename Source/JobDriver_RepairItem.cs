@@ -162,6 +162,10 @@ namespace Repair
                             repkits.Destroy();
                         }
                     }
+                    else if (Settings.ResourceMode == ResourceModes.INGREDIENTS)
+                    {
+                        ConsumeMatsIfNeeded(repairedAmount);
+                    }
 
                     if (item.HitPoints < item.MaxHitPoints)
                         return;
@@ -236,6 +240,11 @@ namespace Repair
                 var hpPerPack = (int)Math.Floor(maxHP * (Settings.HpPerPack / 100.0f));
                 return repairedAmount % hpPerPack == 0;
             }
+        }
+
+        private static void ConsumeMatsIfNeeded(int repairedAmount)
+        {
+            //TODO: Make me work.
         }
 
         private static Toil JumpToCollectNextIntoHandsForBill(Toil gotoGetTargetToil, TargetIndex ind)

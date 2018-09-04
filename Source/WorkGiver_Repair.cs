@@ -14,8 +14,9 @@ namespace Repair
     {
         private readonly List<ThingCount> chosenIngThings;
         private static readonly IntRange ReCheckFailedBillTicksRange;
-        private static string _missingMaterialsTranslated;
         private static string _missingSkillTranslated;
+        private static string _benchNoItemsTranslated;
+        private static string _benchNoMaterialsTranslated;
         private static readonly List<Thing> RelevantThings;
         private static readonly List<Thing> NewRelevantThings;
         private static readonly HashSet<Thing> AssignedThings;
@@ -27,9 +28,12 @@ namespace Repair
 
             if (_missingSkillTranslated == null)
                 _missingSkillTranslated = "MissingSkill".Translate();
+            
+            if (_benchNoItemsTranslated == null)
+                _benchNoItemsTranslated = "Repair.BenchNoItems".Translate();
 
-            if (_missingMaterialsTranslated == null)
-                _missingMaterialsTranslated = "MissingMaterials".Translate();
+            if (_benchNoMaterialsTranslated == null)
+                _benchNoMaterialsTranslated = "Repair.BenchNoMats".Translate();
         }
 
         static WorkGiver_Repair()
@@ -92,7 +96,7 @@ namespace Repair
                 var damagedItems = FindDamagedItems(pawn, bench, bill);
                 if (damagedItems == null)
                 {
-                    JobFailReason.Is(_missingMaterialsTranslated);
+                    JobFailReason.Is(_benchNoItemsTranslated);
                     return null;
                 }
                 
@@ -101,14 +105,16 @@ namespace Repair
                 foreach (var item in damagedItems)
                 {
                     if (TryFindBestBillIngredients(bill, pawn, bench, chosenIngThings, item))
+                    {
                         return StartNewRepairJob(bill, giver, item, chosenIngThings);
+                    }
                 }
 
                 if (FloatMenuMakerMap.makingFor != pawn)
                     bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
             }
             
-            JobFailReason.Is(_missingMaterialsTranslated);
+            JobFailReason.Is(_benchNoMaterialsTranslated);
             return null;
         }
 
@@ -357,25 +363,25 @@ namespace Repair
                 case ResourceModes.INGREDIENTS:
 
                     //tmpTotalCost is cached, DO NOT MODIFY IT
-                    var tmpTotalCost = itemDamaged.CostListAdjusted();
-                    totalCost = new List<ThingDefCount>(tmpTotalCost.Count);
-                    totalCost.AddRange(tmpTotalCost.Select(thingCount => new ThingDefCount(thingCount.thingDef, thingCount.count)));
+                    var tmpFullCost = itemDamaged.CostListAdjusted();
+                    totalCost = new List<ThingDefCount>(tmpFullCost.Count);
 
-                    foreach (var thingCount in totalCost)
+                    foreach (var thingCount in tmpFullCost)
                     {
-                        var origCount = thingCount.Count;
+                        var origCount = thingCount.count;
                         var damPercent = (itemDamaged.MaxHitPoints - itemDamaged.HitPoints) / (float) itemDamaged.MaxHitPoints;
                         var newCount = (int) Math.Floor(origCount * damPercent * Settings.INGRED_REPAIR_PERCENT);
-                        thingCount.WithCount(newCount);
-                        Log.Message($"origCount: {origCount} | damPer:{damPercent} | newCount:{newCount}");
-                    }
+                        Debug.PrintLine($"Thing={itemDamaged.LabelNoCount}, mat={thingCount.thingDef}, origCount: {origCount} | damPer:{damPercent} | newCount:{newCount}");
+                        
+                        if(newCount > 0)
+                            totalCost.Add(new ThingDefCount(thingCount.thingDef, newCount));}
                     break;
 
                 default:
                     return new List<ThingDefCount>(0);
             }
 
-            return totalCost.Where(tc => tc.Count != 0).ToList();
+            return totalCost;
         }
 
         private static bool TryFindBestBillIngredientsInSet_NoMix(List<Thing> availableThings, List<ThingDefCount> neededIngreds, List<ThingCount> chosen)

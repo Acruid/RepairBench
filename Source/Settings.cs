@@ -64,6 +64,8 @@ namespace Repair
 
         #region Settings
 
+        internal static bool DebugEnabled = false;
+
         internal const string JOBDEF_REPAIR = "RepairItem"; //JobDef defined in XML
         internal const string THINGDEF_REPKIT = "RepairKit"; //ThingDef defined in XML
 
@@ -91,6 +93,7 @@ namespace Repair
             Scribe_Values.Look(ref RepairRate, "repairRate", 60);
             Scribe_Values.Look(ref SkillGain, "skillGain", 0.55f);
             Scribe_Values.Look(ref HpPerPack, "HpPerPack", 5);
+            Scribe_Values.Look(ref DebugEnabled, "debug");
         }
 
         public static void DoSettingsWindowContents(Rect inRect)
