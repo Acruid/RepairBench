@@ -69,7 +69,10 @@ namespace Repair
 
             if (giver == null || !ThingIsUsableBillGiver(bench) || !giver.CurrentlyUsableForBills() || !giver.BillStack.AnyShouldDoNow || bench.IsBurning() || bench.IsForbidden(pawn))
                 return null;
-            
+
+            if (!pawn.CanReserve(bench))
+                return null;
+
             if (!pawn.CanReserveAndReach(bench.InteractionCell, PathEndMode.OnCell, Danger.Some))
                 return null;
             
