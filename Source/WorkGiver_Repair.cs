@@ -455,6 +455,10 @@ namespace Repair
             // add ingredients
             for (var index = 0; index < ingredients.Count; ++index)
             {
+                // don't add items with zero count
+                if (ingredients[index].Count <= 0)
+                    continue;
+
                 job.targetQueueB.Add(ingredients[index].Thing);
                 job.countQueue.Add(ingredients[index].Count);
             }
