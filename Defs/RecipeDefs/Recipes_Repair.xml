@@ -6,7 +6,6 @@
 		<label>make repair kits</label>
 		<description>Craft 10 repair kits.</description>
 		<jobString>Making repair kits.</jobString>
-		<workSpeedStat>SmithingSpeed</workSpeedStat>
 		<effectWorking>Cook</effectWorking>
 		<soundWorking>Recipe_Machining</soundWorking>
 		<allowMixingIngredients>false</allowMixingIngredients>
@@ -54,7 +53,6 @@
 		<label>repair apparel</label>
 		<description>Repair apparel item at a repairing bench.</description>
 		<jobString>repairing apparel item</jobString>
-		<workSpeedStat>SmithingSpeed</workSpeedStat>
 		<effectWorking>Cook</effectWorking>
 		<soundWorking>Recipe_Machining</soundWorking>
 		<allowMixingIngredients>false</allowMixingIngredients>
@@ -87,7 +85,6 @@
 		<label>repair misc</label>
 		<description>Repair misc item at a repairing bench.</description>
 		<jobString>repairing misc item</jobString>
-		<workSpeedStat>SmithingSpeed</workSpeedStat>
 		<effectWorking>Cook</effectWorking>
 		<soundWorking>Recipe_Machining</soundWorking>
 		<allowMixingIngredients>false</allowMixingIngredients>
@@ -122,7 +119,6 @@
 		<label>repair weapon</label>
 		<description>Repair weapon item at a repairing bench.</description>
 		<jobString>repairing weapon item</jobString>
-		<workSpeedStat>SmithingSpeed</workSpeedStat>
 		<effectWorking>Cook</effectWorking>
 		<soundWorking>Recipe_Machining</soundWorking>
 		<allowMixingIngredients>false</allowMixingIngredients>
