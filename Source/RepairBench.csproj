@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Debug.cs" />
+    <Compile Include="ItemRepairProgress.cs" />
     <Compile Include="JobDriver_RepairItem.cs" />
     <Compile Include="ModRepBench.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

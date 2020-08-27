@@ -338,7 +338,7 @@ namespace Repair
         /// </summary>
         /// <param name="itemDamaged">The item to be repaired.</param>
         /// <returns></returns>
-        private static List<ThingDefCount> CalculateTotalIngredients(Thing itemDamaged)
+        internal static List<ThingDefCount> CalculateTotalIngredients(Thing itemDamaged)
         {
             List<ThingDefCount> totalCost;
             switch (Settings.ResourceMode)
@@ -373,11 +373,13 @@ namespace Repair
                     {
                         var origCount = thingCount.count;
                         var damPercent = (itemDamaged.MaxHitPoints - itemDamaged.HitPoints) / (float) itemDamaged.MaxHitPoints;
-                        var newCount = (int) Math.Floor(origCount * damPercent * Settings.INGRED_REPAIR_PERCENT);
+                        var amountPct = thingCount.thingDef.IsWithinCategory(ThingCategoryDef.Named("ResourcesRaw"))? 0.75f: 0.33f;
+                        var newCount = (int) Math.Floor(origCount * damPercent * amountPct * Settings.INGRED_REPAIR_PERCENT);
                         Debug.PrintLine($"Thing={itemDamaged.LabelNoCount}, mat={thingCount.thingDef}, origCount: {origCount} | damPer:{damPercent} | newCount:{newCount}");
                         
                         if(newCount > 0)
-                            totalCost.Add(new ThingDefCount(thingCount.thingDef, newCount));}
+                            totalCost.Add(new ThingDefCount(thingCount.thingDef, newCount));
+                    }
                     break;
 
                 default:

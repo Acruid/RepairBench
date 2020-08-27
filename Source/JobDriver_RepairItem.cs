@@ -96,6 +96,11 @@ namespace Repair
             //This will do nothing if we took ingredients and are thus already at the bill giver
             yield return gotoBillGiver;
 
+            var controller = new ItemRepairProgress(pawn,
+                table.IngredientStackCells,
+                WorkGiver_Repair.CalculateTotalIngredients(item),
+                item.MaxHitPoints - item.HitPoints);
+
             float ticksToNextRepair = Settings.RepairRate;
             var repairedAmount = 0;
             var repairToil = new Toil
@@ -126,45 +131,10 @@ namespace Repair
                     item.HitPoints += Settings.HP_GAIN;
                     repairedAmount += Settings.HP_GAIN;
 
-                    if (Settings.ResourceMode == ResourceModes.REPAIR_KIT && ShouldConsumeKit(repairedAmount, item.MaxHitPoints))
-                    {
-                        //TODO: investigate job.placedTargets instead of searching every time
-                        Thing repkits = null;
-                        foreach (var spot in table.IngredientStackCells)
-                        {
-                            if (!spot.IsValid || repkits != null)
-                                break;
-
-                            var list = pawn.Map.thingGrid.ThingsListAt(spot).Where(thing => thing.def == ThingDef.Named(Settings.THINGDEF_REPKIT));
-                            foreach (var thing in list)
-                            {
-                                repkits = thing;
-                                break;
-                            }
-                        }
-
-                        // out of kits
-                        if (repkits == null)
-                        {
-                            //Technically we did not Succeed, but the job itself did not fail, we just ran out of kits.
-                            EndJobWith(JobCondition.Succeeded);
-                            return;
-                        }
-
-                        if (repkits.stackCount > 1)
-                        {
-                            var kit = repkits.SplitOff(1);
-                            kit.Destroy();
-                        }
-                        else
-                        {
-                            repkits.DeSpawn();
-                            repkits.Destroy();
-                        }
-                    }
-                    else if (Settings.ResourceMode == ResourceModes.INGREDIENTS)
-                    {
-                        ConsumeMatsIfNeeded(repairedAmount);
+                    if (!controller.AddRepairedAmount(Settings.HP_GAIN)) {
+                        //Technically we did not Succeed, but the job itself did not fail, we just ran out of kits.
+                        EndJobWith(JobCondition.Succeeded);
+                        return;
                     }
 
                     if (item.HitPoints < item.MaxHitPoints)
@@ -308,29 +278,6 @@ namespace Repair
                     actor.jobs.curDriver.JumpToToil(gotoGetTargetToil);
                     break;
 
-
-                    /*
-                    //Won't take any - skip
-                    if (numToTake <= 0)
-                        continue;
-
-                    //Remove the amount to take from the num to bring list
-                    curJob.countQueue[i] -= numToTake;
-
-                    //Set me to go get it
-                    curJob.maxNumToCarry = numInHands + numToTake;
-                    curJob.SetTarget(ind, targetQueue[i].Thing);
-
-                    //Remove from queue if I'm going to take all
-                    if (curJob.countQueue[i] == 0)
-                    {
-                        curJob.countQueue.RemoveAt(i);
-                        targetQueue.RemoveAt(i);
-                    }
-
-                    actor.jobs.curDriver.JumpToToil(gotoGetTargetToil);
-                    return;
-                    */
                 }
             };
 
