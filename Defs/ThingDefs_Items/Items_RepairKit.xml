@@ -11,13 +11,11 @@
 		</graphicData>
 		<soundInteract>Standard_Drop</soundInteract>
 		<soundDrop>Standard_Drop</soundDrop>
-		<stackLimit>75</stackLimit>
 		<thingCategories>
 			<li>Manufactured</li>
 		</thingCategories>
 		<statBases>
 			<MaxHitPoints>100</MaxHitPoints>
-			<MarketValue>3.50</MarketValue>
 			<Mass>0.50</Mass>
 			<Flammability>1.0</Flammability>
 			<DeteriorationRate>2</DeteriorationRate>
