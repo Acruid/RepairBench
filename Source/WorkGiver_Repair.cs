@@ -86,7 +86,7 @@ namespace Repair
             foreach (var bill in giver.BillStack)
             {
                 if ((bill.recipe.requiredGiverWorkType != null && bill.recipe.requiredGiverWorkType != def.workType) || 
-                    (Find.TickManager.TicksGame < bill.lastIngredientSearchFailTicks + ReCheckFailedBillTicksRange.RandomInRange && FloatMenuMakerMap.makingFor != pawn) || 
+                    (Find.TickManager.TicksGame < bill.nextTickToSearchForIngredients && FloatMenuMakerMap.makingFor != pawn) || 
                     !bill.ShouldDoNow() || !bill.PawnAllowedToStartAnew(pawn))
                     continue;
 
@@ -112,9 +112,6 @@ namespace Repair
                         return StartNewRepairJob(bill, giver, item, chosenIngThings);
                     }
                 }
-
-                if (FloatMenuMakerMap.makingFor != pawn)
-                    bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
             }
             
             JobFailReason.Is(_benchNoMaterialsTranslated);
